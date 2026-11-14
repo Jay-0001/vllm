@@ -1,5 +1,10 @@
 # M2 A100 fusion-boundary screen
 
+**Initial result:** [Job 23962859](RESULT_CARD_23962859.md) rejected both
+manual split points for the 0.5B/default-Inductor motif. All arms launched
+the same five GPU kernels; the splits were slower. Select a region with a
+distinct lowering before repeating this shape sweep on 7B.
+
 This is a **rejection experiment**, not an optimized vLLM model path. It tests
 whether Inductor's post-lowering choice for a Qwen-style decoder motif is
 repeatedly worse than a small legal partition oracle. The motif follows
@@ -44,7 +49,7 @@ visible. Interpret the result as a graph benchmark, not request latency.
 
 ---
 
-## Delta launch
+## Reproducing the initial Delta screen
 
 Copy these files to the same paths in the Delta clone, or commit and push this
 branch locally and then fetch it on Delta. From `/u/jsaravananindira/vllm` on
@@ -62,31 +67,14 @@ than one visible CUDA device. The Slurm log is `jay_outputs/m2-screen-<job>.out`
 Results, detailed logs, compiler caches, environment details, and profiler
 traces are under `m2_experiments/{results,logs,cache,metadata}/<job>/`.
 
-If the first pass has a credible gap, repeat in alternating order and include
-held-out shapes, then confirm with the 7B dimensions. If the 0.5B pass is
-negative, still check 7B at a few sizes before rejecting this **7B motif**:
-
-```bash
-MODEL_SIZE=0.5b TOKENS='2 8 128 256' REPEATS=3 PROFILE=0 \
-  sbatch --export=ALL benchmarks/kernels/m2_fusion_boundary/delta_a100.sbatch
-MODEL_SIZE=7b TOKENS='1 4 64' REPEATS=1 PROFILE=1 \
-  sbatch --export=ALL benchmarks/kernels/m2_fusion_boundary/delta_a100.sbatch
-MODEL_SIZE=7b TOKENS='4 64' REPEATS=1 PROFILE=0 \
-  ARMS='stock split_norm split_activation benchmark_fusion max_autotune' \
-  sbatch --export=ALL benchmarks/kernels/m2_fusion_boundary/delta_a100.sbatch
-```
-
-Those are follow-up commands, not part of the initial allocation. Choose a
-smaller shape set if the first job shows high compile cost; extend the Slurm
-time limit only for a surviving case. Repeat any promising 7B case three
-times in alternating order with held-out sizes. If
-both model sizes show identical generated code, no stable advantage beyond
-run variation, or a built-in tuning arm matches the oracle, record a
-negative M2 result for this motif. A positive screen requires a consistent
-advantage across held-out shapes, matching outputs, a generated-code/profile
-mechanism (conversion, materialization, occupancy, or spills), and a cheap
-feature that predicts the winning boundary. Confirm the mechanism on the
-actual vLLM compiled graph and then check request-level impact.
+Job 23962859 completed this screen. Its manual splits left the GPU launch
+structure unchanged, so repeating these arms at more shapes would primarily
+measure compiled-call overhead. The next M2 screen should first extract a
+region from the actual 7B compiled graph and establish that its legal forms
+generate different GPU code. The result card lists the next gates. Only a
+distinct, correct lowering with a plausible advantage warrants alternating
+repetitions, held-out shapes, built-in tuning comparisons, and a vLLM serving
+test.
 
 ---
 
