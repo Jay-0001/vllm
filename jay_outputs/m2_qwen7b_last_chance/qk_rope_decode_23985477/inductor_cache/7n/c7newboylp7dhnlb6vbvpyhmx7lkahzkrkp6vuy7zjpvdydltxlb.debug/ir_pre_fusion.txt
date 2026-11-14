@@ -1,0 +1,218 @@
+op0: SchedulerNode(ComputedBuffer)
+op0.writes = [MemoryDep('buf0', 128*d0 + d1, {d0: 28, d1: 128})]
+op0.unmet_dependencies = []
+op0.met_dependencies = 
+    [   MemoryDep('arg0_1', 128*d0 + ((d1 - 64)) + 64, {d0: 28, d1: 128}),
+        MemoryDep('arg0_1', 128*d0 + ((d1 - 64)), {d0: 28, d1: 128}),
+        MemoryDep('arg0_1', 128*d0 + ((d1)) + 64, {d0: 28, d1: 128}),
+        MemoryDep('arg0_1', 128*d0 + ((d1)), {d0: 28, d1: 128}),
+        MemoryDep('arg1_1', 0, {}),
+        MemoryDep('arg2_1', 128*tmp0 + ((d1)), {d0: 28, d1: 128}),
+        MemoryDep('arg2_1', 128*tmp1 + ((d1)) + 64, {d0: 28, d1: 128}),
+        MemoryDep('arg2_1', 128*tmp2 + ((d1 - 64)), {d0: 28, d1: 128}),
+        MemoryDep('arg2_1', 128*tmp3 + ((d1 - 64)) + 64, {d0: 28, d1: 128})]
+op0.min_input_distance = 0
+op0.max_input_distance = 0
+op0.outputs = [
+    buf0: ComputedBuffer
+    buf0.layout = FixedLayout('cuda:0', torch.bfloat16, size=[1, 28, 128], stride=[3584, 128, 1])
+    buf0.users = [NodeUser(node=OUTPUT, can_inplace=False, is_weak=False)]
+]
+op0.group.device = cuda:0
+op0.group.iteration = (3584, 1)
+op0.sizes = ([28, 128], [])
+arg0_1_layout = FixedLayout('cuda:0', torch.bfloat16, size=[1, 4608], stride=[4608, 1])
+arg1_1_layout = FixedLayout('cuda:0', torch.int64, size=[1], stride=[1])
+arg2_1_layout = FixedLayout('cuda:0', torch.bfloat16, size=[32768, 128], stride=[128, 1])
+arg0_1_layout = FixedLayout('cuda:0', torch.bfloat16, size=[1, 4608], stride=[4608, 1])
+arg2_1_layout = FixedLayout('cuda:0', torch.bfloat16, size=[32768, 128], stride=[128, 1])
+arg0_1_layout = FixedLayout('cuda:0', torch.bfloat16, size=[1, 4608], stride=[4608, 1])
+arg2_1_layout = FixedLayout('cuda:0', torch.bfloat16, size=[32768, 128], stride=[128, 1])
+arg0_1_layout = FixedLayout('cuda:0', torch.bfloat16, size=[1, 4608], stride=[4608, 1])
+arg2_1_layout = FixedLayout('cuda:0', torch.bfloat16, size=[32768, 128], stride=[128, 1])
+buf0_layout = FixedLayout('cuda:0', torch.bfloat16, size=[1, 28, 128], stride=[3584, 128, 1])
+class op0_loop_body:
+    var_ranges = {p0: 28, p1: 128}
+    index0 = p1
+    index1 = 128*p0 + ((p1))
+    index2 = 0
+    index3 = 128*indirect0 + ((p1))
+    index4 = 128*p0 + ((p1)) + 64
+    index5 = 128*indirect1 + ((p1)) + 64
+    index6 = 128*p0 + ((p1 - 64)) + 64
+    index7 = 128*indirect2 + ((p1 - 64))
+    index8 = 128*p0 + ((p1 - 64))
+    index9 = 128*indirect3 + ((p1 - 64)) + 64
+    index10 = 128*p0 + p1
+    def body(self, ops):
+        get_index = self.get_index('index0')
+        index_expr = ops.index_expr(get_index, torch.int64)
+        constant = ops.constant(0, torch.int64)
+        ge = ops.ge(index_expr, constant)
+        get_index_1 = self.get_index('index0')
+        index_expr_1 = ops.index_expr(get_index_1, torch.int64)
+        constant_1 = ops.constant(64, torch.int64)
+        lt = ops.lt(index_expr_1, constant_1)
+        masked_subblock1 = self.masked_subblock1(lt, 0.0)
+        get_index_2 = self.get_index('index0')
+        index_expr_2 = ops.index_expr(get_index_2, torch.int64)
+        constant_2 = ops.constant(64, torch.int64)
+        ge_1 = ops.ge(index_expr_2, constant_2)
+        get_index_3 = self.get_index('index0')
+        index_expr_3 = ops.index_expr(get_index_3, torch.int64)
+        constant_3 = ops.constant(128, torch.int64)
+        lt_1 = ops.lt(index_expr_3, constant_3)
+        masked_subblock4 = self.masked_subblock4(ge_1, 0.0)
+        where = ops.where(lt, masked_subblock1, masked_subblock4)
+        get_index_4 = self.get_index('index10')
+        store = ops.store('buf0', get_index_4, where, None)
+        return store
+    def masked_subblock1(self, ops):
+        get_index = self.get_index('index1')
+        load = ops.load('arg0_1', get_index)
+        get_index_1 = self.get_index('index2')
+        load_1 = ops.load('arg1_1', get_index_1)
+        set_indirect0 = self.set_indirect0(load_1)
+        get_index_2 = self.get_index('index3')
+        load_2 = ops.load('arg2_1', get_index_2)
+        mul = ops.mul(load, load_2)
+        get_index_3 = self.get_index('index4')
+        load_3 = ops.load('arg0_1', get_index_3)
+        get_index_4 = self.get_index('index2')
+        load_4 = ops.load('arg1_1', get_index_4)
+        set_indirect1 = self.set_indirect1(load_4)
+        get_index_5 = self.get_index('index5')
+        load_5 = ops.load('arg2_1', get_index_5)
+        mul_1 = ops.mul(load_3, load_5)
+        sub = ops.sub(mul, mul_1)
+        return sub
+    def masked_subblock4(self, ops):
+        get_index = self.get_index('index6')
+        load = ops.load('arg0_1', get_index)
+        get_index_1 = self.get_index('index2')
+        load_1 = ops.load('arg1_1', get_index_1)
+        set_indirect2 = self.set_indirect2(load_1)
+        get_index_2 = self.get_index('index7')
+        load_2 = ops.load('arg2_1', get_index_2)
+        mul = ops.mul(load, load_2)
+        get_index_3 = self.get_index('index8')
+        load_3 = ops.load('arg0_1', get_index_3)
+        get_index_4 = self.get_index('index2')
+        load_4 = ops.load('arg1_1', get_index_4)
+        set_indirect3 = self.set_indirect3(load_4)
+        get_index_5 = self.get_index('index9')
+        load_5 = ops.load('arg2_1', get_index_5)
+        mul_1 = ops.mul(load_3, load_5)
+        add = ops.add(mul, mul_1)
+        return add
+
+
+op1: SchedulerNode(ComputedBuffer)
+op1.writes = [MemoryDep('buf1', 128*d0 + d1, {d0: 4, d1: 128})]
+op1.unmet_dependencies = []
+op1.met_dependencies = 
+    [   MemoryDep('arg0_1', 128*d0 + ((d1 - 64)) + 3584, {d0: 4, d1: 128}),
+        MemoryDep('arg0_1', 128*d0 + ((d1 - 64)) + 3648, {d0: 4, d1: 128}),
+        MemoryDep('arg0_1', 128*d0 + ((d1)) + 3584, {d0: 4, d1: 128}),
+        MemoryDep('arg0_1', 128*d0 + ((d1)) + 3648, {d0: 4, d1: 128}),
+        MemoryDep('arg1_1', 0, {}),
+        MemoryDep('arg2_1', 128*tmp0 + ((d1)), {d0: 4, d1: 128}),
+        MemoryDep('arg2_1', 128*tmp1 + ((d1)) + 64, {d0: 4, d1: 128}),
+        MemoryDep('arg2_1', 128*tmp2 + ((d1 - 64)), {d0: 4, d1: 128}),
+        MemoryDep('arg2_1', 128*tmp3 + ((d1 - 64)) + 64, {d0: 4, d1: 128})]
+op1.min_input_distance = 0
+op1.max_input_distance = 0
+op1.outputs = [
+    buf1: ComputedBuffer
+    buf1.layout = FixedLayout('cuda:0', torch.bfloat16, size=[1, 4, 128], stride=[512, 128, 1])
+    buf1.users = [NodeUser(node=OUTPUT, can_inplace=False, is_weak=False)]
+]
+op1.group.device = cuda:0
+op1.group.iteration = (512, 1)
+op1.sizes = ([4, 128], [])
+arg0_1_layout = FixedLayout('cuda:0', torch.bfloat16, size=[1, 4608], stride=[4608, 1])
+arg1_1_layout = FixedLayout('cuda:0', torch.int64, size=[1], stride=[1])
+arg2_1_layout = FixedLayout('cuda:0', torch.bfloat16, size=[32768, 128], stride=[128, 1])
+arg0_1_layout = FixedLayout('cuda:0', torch.bfloat16, size=[1, 4608], stride=[4608, 1])
+arg2_1_layout = FixedLayout('cuda:0', torch.bfloat16, size=[32768, 128], stride=[128, 1])
+arg0_1_layout = FixedLayout('cuda:0', torch.bfloat16, size=[1, 4608], stride=[4608, 1])
+arg2_1_layout = FixedLayout('cuda:0', torch.bfloat16, size=[32768, 128], stride=[128, 1])
+arg0_1_layout = FixedLayout('cuda:0', torch.bfloat16, size=[1, 4608], stride=[4608, 1])
+arg2_1_layout = FixedLayout('cuda:0', torch.bfloat16, size=[32768, 128], stride=[128, 1])
+buf1_layout = FixedLayout('cuda:0', torch.bfloat16, size=[1, 4, 128], stride=[512, 128, 1])
+class op1_loop_body:
+    var_ranges = {p0: 4, p1: 128}
+    index0 = p1
+    index1 = 128*p0 + ((p1)) + 3584
+    index2 = 0
+    index3 = 128*indirect0 + ((p1))
+    index4 = 128*p0 + ((p1)) + 3648
+    index5 = 128*indirect1 + ((p1)) + 64
+    index6 = 128*p0 + ((p1 - 64)) + 3648
+    index7 = 128*indirect2 + ((p1 - 64))
+    index8 = 128*p0 + ((p1 - 64)) + 3584
+    index9 = 128*indirect3 + ((p1 - 64)) + 64
+    index10 = 128*p0 + p1
+    def body(self, ops):
+        get_index = self.get_index('index0')
+        index_expr = ops.index_expr(get_index, torch.int64)
+        constant = ops.constant(0, torch.int64)
+        ge = ops.ge(index_expr, constant)
+        get_index_1 = self.get_index('index0')
+        index_expr_1 = ops.index_expr(get_index_1, torch.int64)
+        constant_1 = ops.constant(64, torch.int64)
+        lt = ops.lt(index_expr_1, constant_1)
+        masked_subblock1 = self.masked_subblock1(lt, 0.0)
+        get_index_2 = self.get_index('index0')
+        index_expr_2 = ops.index_expr(get_index_2, torch.int64)
+        constant_2 = ops.constant(64, torch.int64)
+        ge_1 = ops.ge(index_expr_2, constant_2)
+        get_index_3 = self.get_index('index0')
+        index_expr_3 = ops.index_expr(get_index_3, torch.int64)
+        constant_3 = ops.constant(128, torch.int64)
+        lt_1 = ops.lt(index_expr_3, constant_3)
+        masked_subblock4 = self.masked_subblock4(ge_1, 0.0)
+        where = ops.where(lt, masked_subblock1, masked_subblock4)
+        get_index_4 = self.get_index('index10')
+        store = ops.store('buf1', get_index_4, where, None)
+        return store
+    def masked_subblock1(self, ops):
+        get_index = self.get_index('index1')
+        load = ops.load('arg0_1', get_index)
+        get_index_1 = self.get_index('index2')
+        load_1 = ops.load('arg1_1', get_index_1)
+        set_indirect0 = self.set_indirect0(load_1)
+        get_index_2 = self.get_index('index3')
+        load_2 = ops.load('arg2_1', get_index_2)
+        mul = ops.mul(load, load_2)
+        get_index_3 = self.get_index('index4')
+        load_3 = ops.load('arg0_1', get_index_3)
+        get_index_4 = self.get_index('index2')
+        load_4 = ops.load('arg1_1', get_index_4)
+        set_indirect1 = self.set_indirect1(load_4)
+        get_index_5 = self.get_index('index5')
+        load_5 = ops.load('arg2_1', get_index_5)
+        mul_1 = ops.mul(load_3, load_5)
+        sub = ops.sub(mul, mul_1)
+        return sub
+    def masked_subblock4(self, ops):
+        get_index = self.get_index('index6')
+        load = ops.load('arg0_1', get_index)
+        get_index_1 = self.get_index('index2')
+        load_1 = ops.load('arg1_1', get_index_1)
+        set_indirect2 = self.set_indirect2(load_1)
+        get_index_2 = self.get_index('index7')
+        load_2 = ops.load('arg2_1', get_index_2)
+        mul = ops.mul(load, load_2)
+        get_index_3 = self.get_index('index8')
+        load_3 = ops.load('arg0_1', get_index_3)
+        get_index_4 = self.get_index('index2')
+        load_4 = ops.load('arg1_1', get_index_4)
+        set_indirect3 = self.set_indirect3(load_4)
+        get_index_5 = self.get_index('index9')
+        load_5 = ops.load('arg2_1', get_index_5)
+        mul_1 = ops.mul(load_3, load_5)
+        add = ops.add(mul, mul_1)
+        return add
+
+

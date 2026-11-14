@@ -1,0 +1,39 @@
+W1114 17:50:15.139000 1072183 torch/_opaque_base.py:6] torch._opaque_base is deprecated, use torch._custom_class_base instead
+W1114 17:50:15.140000 1072183 torch/_library/opaque_object.py:288] register_opaque_type is deprecated, use register_custom_class instead
+W1114 17:50:15.140000 1072183 torch/_library/opaque_object.py:211] typ='value' is deprecated, use typ='constant' instead
+W1114 17:50:50.821000 1072183 torch/_inductor/debug.py:587] [0/0] model__0_inference_0 debug trace: /u/jsaravananindira/vllm/jay_outputs/m2_qwen7b_last_chance/qk_rope_decode_23985477/torch_compile_debug/torch_compile_debug/run_2026_11_14_17_50_40_705174-pid_1072183/torchinductor/model__0_inference_0.0
+Traceback (most recent call last):
+  File "/u/jsaravananindira/vllm/benchmarks/kernels/m2_fusion_boundary/qk_rope_oracle.py", line 182, in <module>
+    main()
+  File "/u/jsaravananindira/vllm/benchmarks/kernels/m2_fusion_boundary/qk_rope_oracle.py", line 172, in main
+    case = run_shape(tokens, cache, args.output, args.bench_rep_ms)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/u/jsaravananindira/vllm/benchmarks/kernels/m2_fusion_boundary/qk_rope_oracle.py", line 117, in run_shape
+    candidate, kernel = oracle()
+                        ^^^^^^^^
+  File "/u/jsaravananindira/vllm/benchmarks/kernels/m2_fusion_boundary/qk_rope_oracle.py", line 110, in oracle
+    kernel = combined_qk_kernel[(triton.cdiv(tokens * QK_WIDTH, BLOCK),)](
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/u/jsaravananindira/vllm/.venv/lib/python3.12/site-packages/triton/runtime/jit.py", line 374, in <lambda>
+    return lambda *args, **kwargs: self.run(grid=grid, warmup=False, *args, **kwargs)
+                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/u/jsaravananindira/vllm/.venv/lib/python3.12/site-packages/triton/runtime/jit.py", line 757, in run
+    kernel = self._do_compile(key, signature, device, constexprs, options, attrs, warmup)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/u/jsaravananindira/vllm/.venv/lib/python3.12/site-packages/triton/runtime/jit.py", line 902, in _do_compile
+    kernel = self.compile(src, target=target, options=options.__dict__)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/u/jsaravananindira/vllm/.venv/lib/python3.12/site-packages/triton/compiler/compiler.py", line 307, in compile
+    module = src.make_ir(target, options, codegen_fns, module_map, context)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/u/jsaravananindira/vllm/.venv/lib/python3.12/site-packages/triton/compiler/compiler.py", line 80, in make_ir
+    return ast_to_ttir(self.fn, self, context=context, options=options, codegen_fns=codegen_fns,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+triton.compiler.errors.CompilationError: at 5:28:
+def combined_qk_kernel(
+    qkv, positions, cache, q_out, k_out, tokens: tl.constexpr, block: tl.constexpr
+):
+    index = tl.program_id(0) * block + tl.arange(0, block)
+    mask = index < tokens * QK_WIDTH
+                            ^
+NameError("Cannot access global variable QK_WIDTH from within @jit'ed function. Triton kernels can only access global variables that are instanstiated as constexpr (`x = triton.language.constexpr(42)`). Note that this is different from annotating a variable as constexpr (`x: triton.language.constexpr = 42`), which is not supported.  Alternatively, set the envvar TRITON_ALLOW_NON_CONSTEXPR_GLOBALS=1, but we do not promise to support this forever.")
