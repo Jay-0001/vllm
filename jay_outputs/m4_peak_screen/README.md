@@ -1,6 +1,10 @@
 # M4 physical peak rejection screen
 
-This is a proposed A100 experiment. No result is recorded yet.
+**Initial result:** [Job 23969387](RESULT_CARD_23969387.md) confirms full
+intermediate materialization in stock Inductor, but rejects this tiled
+PyTorch formulation under the provisional screen gate. Inductor keeps all ten
+partial down-projection outputs live until a final add, so the tiled graph
+barely reduces allocated peak and misses the latency target.
 
 The motif is the Qwen2.5-7B-Instruct gated MLP with hidden size 3584 and
 intermediate size 18944, expressed in PyTorch with random BF16 weights. The
