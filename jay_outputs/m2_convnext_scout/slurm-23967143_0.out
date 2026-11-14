@@ -1,0 +1,136 @@
+W1114 12:12:53.736000 2265681 torch/_inductor/debug.py:587] [0/0] model__0_inference_0 debug trace: /u/jsaravananindira/vllm/jay_outputs/m2_convnext_scout/23967143_0_b1_layout1/debug/torch_compile_debug/run_2026_11_14_12_12_42_511801-pid_2265681/torchinductor/model__0_inference_0.0
+USDT:2026-11-14 12:12:54 2265681:2265681 SyncActivityProfilerHandler.cpp:39] profiler_start
+USDT:2026-11-14 12:12:54 2265681:2265681 SyncActivityProfilerHandler.cpp:46] profiler_stop
+USDT:2026-11-14 12:12:54 2265681:2265681 SyncActivityProfilerHandler.cpp:39] profiler_start
+USDT:2026-11-14 12:12:54 2265681:2265681 SyncActivityProfilerHandler.cpp:46] profiler_stop
+{
+  "model": "convnext",
+  "batch": 1,
+  "length": 0,
+  "layout_optimization_env": "1",
+  "benchmark_fusion_env": "unset",
+  "platform": "Linux-5.14.0-570.154.1.el9_6.x86_64-x86_64-with-glibc2.34",
+  "status": "passed",
+  "torch": "2.14.0+cu132",
+  "cuda": "13.2",
+  "gpu": "NVIDIA A100-SXM4-40GB",
+  "layout_optimization_config": true,
+  "benchmark_fusion_config": false,
+  "library": "torchvision",
+  "version": "0.29.0+cu132",
+  "target": "features.1.0",
+  "input_spec": [
+    {
+      "shape": [
+        1,
+        96,
+        56,
+        56
+      ],
+      "stride": [
+        301056,
+        1,
+        5376,
+        96
+      ],
+      "dtype": "torch.bfloat16",
+      "device": "cuda:0"
+    }
+  ],
+  "kwargs_spec": {},
+  "dynamo_graph_count": 1,
+  "dynamo_graph_break_count": 0,
+  "dynamo_break_reasons": [],
+  "first_compiled_call_s": 11.03388388210442,
+  "max_abs_error": 0.0,
+  "compiled_peak_allocated_bytes": 71758848,
+  "compiled_peak_reserved_bytes": 136314880,
+  "compiled_peak_allocated_over_baseline_bytes": 3010560,
+  "compiled_peak_reserved_over_baseline_bytes": 0,
+  "eager_timing": {
+    "median_us": 209.72799509763718,
+    "min_us": 206.65599405765533,
+    "max_us": 324.12800192832947,
+    "samples_us": [
+      217.18400716781616,
+      213.98399770259857,
+      227.9359996318817,
+      212.54399418830872,
+      221.53599560260773,
+      212.351992726326,
+      220.0320065021515,
+      208.15999805927277,
+      208.6080014705658,
+      208.25600624084473,
+      218.30399334430695,
+      211.0079973936081,
+      207.20000565052032,
+      208.92800390720367,
+      216.41600131988525,
+      209.82399582862854,
+      208.12800526618958,
+      207.20000565052032,
+      324.12800192832947,
+      209.47200059890747,
+      209.6319943666458,
+      207.64799416065216,
+      213.21600675582886,
+      210.207998752594,
+      207.20000565052032,
+      207.68000185489655,
+      206.65599405765533,
+      219.9680060148239,
+      208.80000293254852,
+      208.38400721549988
+    ]
+  },
+  "compiled_timing": {
+    "median_us": 220.43199837207794,
+    "min_us": 214.4320011138916,
+    "max_us": 332.41599798202515,
+    "samples_us": [
+      239.07199501991272,
+      226.04799270629883,
+      222.24000096321106,
+      223.90399873256683,
+      234.78400707244873,
+      223.36000204086304,
+      220.19200026988983,
+      219.16800737380981,
+      233.8239997625351,
+      221.53599560260773,
+      218.55999529361725,
+      216.92800521850586,
+      231.74400627613068,
+      219.200000166893,
+      218.1120067834854,
+      215.71199595928192,
+      228.86399924755096,
+      218.1439995765686,
+      220.67199647426605,
+      221.15199267864227,
+      229.76000607013702,
+      216.5759950876236,
+      216.09599888324738,
+      216.60800278186798,
+      332.41599798202515,
+      219.7120040655136,
+      214.4320011138916,
+      218.72000396251678,
+      230.6559979915619,
+      219.67999637126923
+    ]
+  },
+  "eager_cuda_event_count": 8,
+  "compiled_cuda_event_count": 6,
+  "generated_python": [
+    "57/c57eodlnrhqsak4fqefekxeispdv7l7ocly6hhjfuiz6pi7aaocr.py",
+    "5o/c5o5r4pxxp34masvlq35ye5yicl4cwfnkdd5qs4buirinku77jpf.py",
+    "cn/ccnmtev4vubqpwkqgpbjyhspc4toutwnwwkkyoyffo2i6qum7fac.py",
+    "ue/cue7x3z2thaa4f4nl7oawhcdtqvnssh744lbjzxfeuy2wc25qp7d.py",
+    "ue/cue7x3z2thaa4f4nl7oawhcdtqvnssh744lbjzxfeuy2wc25qp7d.debug/fx_graph_readable.py",
+    "ue/cue7x3z2thaa4f4nl7oawhcdtqvnssh744lbjzxfeuy2wc25qp7d.debug/fx_graph_runnable.py",
+    "ue/cue7x3z2thaa4f4nl7oawhcdtqvnssh744lbjzxfeuy2wc25qp7d.debug/fx_graph_transformed.py",
+    "ue/cue7x3z2thaa4f4nl7oawhcdtqvnssh744lbjzxfeuy2wc25qp7d.debug/output_code.py"
+  ]
+}

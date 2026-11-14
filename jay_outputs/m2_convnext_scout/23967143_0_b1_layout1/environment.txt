@@ -1,0 +1,4 @@
+Sat Nov 14 18:12:23 UTC 2026
+14bdc66af753c800fd652639e185dc5cfd4e99cc
+name, memory.total [MiB], driver_version
+NVIDIA A100-SXM4-40GB, 40960 MiB, 595.71.05

@@ -1,0 +1,15 @@
+{
+  "model": "diffusion",
+  "batch": 1,
+  "length": 0,
+  "layout_optimization_env": "unset",
+  "benchmark_fusion_env": "0",
+  "platform": "Linux-5.14.0-570.154.1.el9_6.x86_64-x86_64-with-glibc2.34",
+  "status": "failed",
+  "torch": "2.14.0+cu132",
+  "cuda": "13.2",
+  "gpu": "NVIDIA A100-SXM4-40GB",
+  "layout_optimization_config": true,
+  "benchmark_fusion_config": false,
+  "error": "Traceback (most recent call last):\n  File \"/u/jsaravananindira/vllm/jay_scripts/m2_model_scout.py\", line 213, in main\n    model, target, run_full, detail = make_case(\n                                      ^^^^^^^^^^\n  File \"/u/jsaravananindira/vllm/jay_scripts/m2_model_scout.py\", line 41, in make_case\n    import diffusers\nModuleNotFoundError: No module named 'diffusers'\n"
+}
