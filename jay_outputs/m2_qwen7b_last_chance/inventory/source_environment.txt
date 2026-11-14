@@ -1,0 +1,6 @@
+Sat Nov  7 23:52:19 UTC 2026
+8530a778f78dc7cd9a31e108ebc035c4b27ceb3c
+0.1.dev24300+g8530a778f.precompiled
+name, memory.total [MiB], driver_version
+NVIDIA A100-SXM4-40GB, 40960 MiB, 595.71.05
+Visible CUDA GPUs: 1
