@@ -1,0 +1,166 @@
+There are modules in UNet2DModel that should be kept in float32: []. Casting directly with `to()` can lead to inconsistent results; set `torch_dtype` in `from_pretrained()` instead to keep these modules in float32.
+W1114 17:41:21.042000 2541441 torch/_inductor/debug.py:587] [0/0] model__0_inference_0 debug trace: /u/jsaravananindira/vllm/jay_outputs/m2_diffusion_scout/23985088_1_b1_fusion1/debug/torch_compile_debug/run_2026_11_14_17_41_13_080113-pid_2541441/torchinductor/model__0_inference_0.0
+USDT:2026-11-14 17:41:21 2541441:2541441 SyncActivityProfilerHandler.cpp:39] profiler_start
+USDT:2026-11-14 17:41:21 2541441:2541441 SyncActivityProfilerHandler.cpp:46] profiler_stop
+USDT:2026-11-14 17:41:21 2541441:2541441 SyncActivityProfilerHandler.cpp:39] profiler_start
+USDT:2026-11-14 17:41:21 2541441:2541441 SyncActivityProfilerHandler.cpp:46] profiler_stop
+{
+  "model": "diffusion",
+  "batch": 1,
+  "length": 0,
+  "layout_optimization_env": "unset",
+  "benchmark_fusion_env": "1",
+  "platform": "Linux-5.14.0-570.154.1.el9_6.x86_64-x86_64-with-glibc2.34",
+  "status": "passed",
+  "torch": "2.14.0+cu132",
+  "cuda": "13.2",
+  "gpu": "NVIDIA A100-SXM4-40GB",
+  "layout_optimization_config": true,
+  "benchmark_fusion_config": true,
+  "library": "diffusers",
+  "version": "0.43.0",
+  "architecture": "google/ddpm-cifar10-32 config, random weights",
+  "target": "up_blocks.2.resnets.0",
+  "input_spec": [
+    {
+      "shape": [
+        1,
+        512,
+        16,
+        16
+      ],
+      "stride": [
+        131072,
+        1,
+        8192,
+        512
+      ],
+      "dtype": "torch.bfloat16",
+      "device": "cuda:0"
+    },
+    {
+      "shape": [
+        1,
+        512
+      ],
+      "stride": [
+        512,
+        1
+      ],
+      "dtype": "torch.bfloat16",
+      "device": "cuda:0"
+    }
+  ],
+  "kwargs_spec": {},
+  "dynamo_graph_count": 1,
+  "dynamo_graph_break_count": 0,
+  "dynamo_break_reasons": [],
+  "first_compiled_call_s": 7.840797520941123,
+  "max_abs_error": 0.015625,
+  "compiled_peak_allocated_bytes": 83310080,
+  "compiled_peak_reserved_bytes": 148897792,
+  "compiled_peak_allocated_over_baseline_bytes": 1181696,
+  "compiled_peak_reserved_over_baseline_bytes": 0,
+  "eager_timing": {
+    "median_us": 461.07199788093567,
+    "min_us": 449.3120014667511,
+    "max_us": 607.7759861946106,
+    "samples_us": [
+      476.0960042476654,
+      607.7759861946106,
+      465.92000126838684,
+      473.66398572921753,
+      459.4239890575409,
+      471.8399941921234,
+      464.7360146045685,
+      492.70400404930115,
+      457.92001485824585,
+      460.640013217926,
+      451.26399397850037,
+      487.2959852218628,
+      451.87199115753174,
+      461.7919921875,
+      449.3120014667511,
+      463.20000290870667,
+      455.29600977897644,
+      464.80000019073486,
+      452.5440037250519,
+      461.2480103969574,
+      453.8879990577698,
+      573.311984539032,
+      452.2559940814972,
+      460.89598536491394,
+      452.2559940814972,
+      464.92800116539,
+      455.487996339798,
+      460.03198623657227,
+      450.81600546836853,
+      462.68799901008606
+    ]
+  },
+  "compiled_timing": {
+    "median_us": 303.6800026893616,
+    "min_us": 297.21599817276,
+    "max_us": 406.1119854450226,
+    "samples_us": [
+      309.02400612831116,
+      320.44801115989685,
+      307.3599934577942,
+      309.02400612831116,
+      320.41600346565247,
+      308.4160089492798,
+      302.2080063819885,
+      314.4319951534271,
+      301.9520044326782,
+      303.42400074005127,
+      312.8319978713989,
+      297.21599817276,
+      406.1119854450226,
+      307.8399896621704,
+      301.82400345802307,
+      301.60000920295715,
+      303.42400074005127,
+      299.5840013027191,
+      301.472008228302,
+      308.3840012550354,
+      299.45600032806396,
+      300.2240061759949,
+      309.28000807762146,
+      298.7839877605438,
+      298.2720136642456,
+      312.6719892024994,
+      297.91998863220215,
+      303.9360046386719,
+      310.2400004863739,
+      298.8159954547882
+    ]
+  },
+  "eager_cuda_event_count": 24,
+  "compiled_cuda_event_count": 11,
+  "generated_python": [
+    "2c/c2ccb3azzvuj67mc2wqtgo4wpn4srqkyxjcrxn3j2nb5jnuo5uxf.py",
+    "3a/c3awoltpmgewafygzrdka6hw7fjzlvud72qrz6ragas4ljold2rp.py",
+    "3g/c3g3zxfusyawnaexwq2splpqvk35p6a5wf4qbz6rul3725wuf3gu.py",
+    "3h/c3hr2w3uyzkijzgoeoxbk3xc4cytk7l5xiogqxvapkmpnvehr535.py",
+    "3n/c3ncygtue2pnrihrrjwzsldjvd6swfk6zjgbkp2jomzlnsskkrwz.py",
+    "4s/c4stmabbmsjt3liryzs2kowa4intb6n2l7enjmwsknv3bawamb7y.py",
+    "fc/cfcajrr6ayqrmnlpkm6eilj64mjbtdnkksxkmbmqcxistmeka3eh.py",
+    "fd/cfdynycdc5ljmkxavh6r2kjypltc5ivcq4noywmzuistwldkq2wt.py",
+    "iz/cizrvt5xp53b5givn6wpbzbufynrufbgo2m2upklxjwfk6co3bj6.py",
+    "kc/ckcmd5ldbz22nbswebefskoadbxo5m2qvx6jmywazn4tuz4f2jzc.py",
+    "lw/clwiyazq56mwsnxmv4e7rhcv66qt7it2e7mktuvyyoc4hk76nopy.py",
+    "m2/cm2ef7mkumsblred7lmb3425hzvyo34zxb4msiqr2xogalivglyp.py",
+    "nm/cnm5d7miastkl27tbra4nl36teab2ozupzeel2fwkcrohi7dbeo4.py",
+    "rf/crfsxlo5ix7h5t7gluannwuivdmuuydshiqb52r2eoe2mecabkrs.py",
+    "tg/ctg4paj4iz6ppfw6az74ejls3ksbsyg7w6b4ogp3nk7qjmxiikau.py",
+    "uy/cuy5ybeez2uzrgm3a7w272ejoel7szgxoapwtbplti2avk5rpkxt.py",
+    "vj/cvjrn24mlfwwm7rtuv5ttrtw6ype5g6ifxnaq6fhok7pjzkj3bsb.py",
+    "wh/cwhpa6mcqe77cs6sk26vcn2qgwzt4nrhtyvfqenm3am7aaihyoyf.py",
+    "wp/cwplvs3fbfhmjeor7t3o4wowtf75a5qxobxerbwqyz6wnogej2ut.py",
+    "4s/c4stmabbmsjt3liryzs2kowa4intb6n2l7enjmwsknv3bawamb7y.debug/fx_graph_readable.py",
+    "4s/c4stmabbmsjt3liryzs2kowa4intb6n2l7enjmwsknv3bawamb7y.debug/fx_graph_runnable.py",
+    "4s/c4stmabbmsjt3liryzs2kowa4intb6n2l7enjmwsknv3bawamb7y.debug/fx_graph_transformed.py",
+    "4s/c4stmabbmsjt3liryzs2kowa4intb6n2l7enjmwsknv3bawamb7y.debug/output_code.py"
+  ],
+  "process_wall_s": 38.60814730601851
+}

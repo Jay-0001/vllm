@@ -1,0 +1,30 @@
+graph():
+    %l_self_modules_norm1_parameters_weight_ : torch.nn.parameter.Parameter [num_users=1] = placeholder[target=L_self_modules_norm1_parameters_weight_]
+    %l_self_modules_norm1_parameters_bias_ : torch.nn.parameter.Parameter [num_users=1] = placeholder[target=L_self_modules_norm1_parameters_bias_]
+    %l_input_tensor_ : torch.Tensor [num_users=2] = placeholder[target=L_input_tensor_]
+    %l_self_modules_conv1_parameters_weight_ : torch.nn.parameter.Parameter [num_users=1] = placeholder[target=L_self_modules_conv1_parameters_weight_]
+    %l_self_modules_conv1_parameters_bias_ : torch.nn.parameter.Parameter [num_users=1] = placeholder[target=L_self_modules_conv1_parameters_bias_]
+    %l_temb_ : torch.Tensor [num_users=1] = placeholder[target=L_temb_]
+    %l_self_modules_time_emb_proj_parameters_weight_ : torch.nn.parameter.Parameter [num_users=1] = placeholder[target=L_self_modules_time_emb_proj_parameters_weight_]
+    %l_self_modules_time_emb_proj_parameters_bias_ : torch.nn.parameter.Parameter [num_users=1] = placeholder[target=L_self_modules_time_emb_proj_parameters_bias_]
+    %l_self_modules_norm2_parameters_weight_ : torch.nn.parameter.Parameter [num_users=1] = placeholder[target=L_self_modules_norm2_parameters_weight_]
+    %l_self_modules_norm2_parameters_bias_ : torch.nn.parameter.Parameter [num_users=1] = placeholder[target=L_self_modules_norm2_parameters_bias_]
+    %l_self_modules_conv2_parameters_weight_ : torch.nn.parameter.Parameter [num_users=1] = placeholder[target=L_self_modules_conv2_parameters_weight_]
+    %l_self_modules_conv2_parameters_bias_ : torch.nn.parameter.Parameter [num_users=1] = placeholder[target=L_self_modules_conv2_parameters_bias_]
+    %l_self_modules_conv_shortcut_parameters_weight_ : torch.nn.parameter.Parameter [num_users=1] = placeholder[target=L_self_modules_conv_shortcut_parameters_weight_]
+    %l_self_modules_conv_shortcut_parameters_bias_ : torch.nn.parameter.Parameter [num_users=1] = placeholder[target=L_self_modules_conv_shortcut_parameters_bias_]
+    %hidden_states : [num_users=1] = call_function[target=torch.nn.functional.group_norm](args = (%l_input_tensor_, 32, %l_self_modules_norm1_parameters_weight_, %l_self_modules_norm1_parameters_bias_, 1e-06), kwargs = {})
+    %hidden_states_1 : [num_users=1] = call_function[target=torch.nn.functional.silu](args = (%hidden_states,), kwargs = {inplace: False})
+    %hidden_states_2 : [num_users=1] = call_function[target=torch.conv2d](args = (%hidden_states_1, %l_self_modules_conv1_parameters_weight_, %l_self_modules_conv1_parameters_bias_, (1, 1), (1, 1), (1, 1), 1), kwargs = {})
+    %temb : [num_users=1] = call_function[target=torch.nn.functional.silu](args = (%l_temb_,), kwargs = {inplace: False})
+    %linear : [num_users=1] = call_function[target=torch._C._nn.linear](args = (%temb, %l_self_modules_time_emb_proj_parameters_weight_, %l_self_modules_time_emb_proj_parameters_bias_), kwargs = {})
+    %temb_1 : [num_users=1] = call_function[target=operator.getitem](args = (%linear, (slice(None, None, None), slice(None, None, None), None, None)), kwargs = {})
+    %hidden_states_3 : [num_users=1] = call_function[target=operator.add](args = (%hidden_states_2, %temb_1), kwargs = {})
+    %hidden_states_4 : [num_users=1] = call_function[target=torch.nn.functional.group_norm](args = (%hidden_states_3, 32, %l_self_modules_norm2_parameters_weight_, %l_self_modules_norm2_parameters_bias_, 1e-06), kwargs = {})
+    %hidden_states_5 : [num_users=1] = call_function[target=torch.nn.functional.silu](args = (%hidden_states_4,), kwargs = {inplace: False})
+    %hidden_states_6 : [num_users=1] = call_function[target=torch.nn.functional.dropout](args = (%hidden_states_5, 0.0, False, False), kwargs = {})
+    %hidden_states_7 : [num_users=1] = call_function[target=torch.conv2d](args = (%hidden_states_6, %l_self_modules_conv2_parameters_weight_, %l_self_modules_conv2_parameters_bias_, (1, 1), (1, 1), (1, 1), 1), kwargs = {})
+    %input_tensor : [num_users=1] = call_function[target=torch.conv2d](args = (%l_input_tensor_, %l_self_modules_conv_shortcut_parameters_weight_, %l_self_modules_conv_shortcut_parameters_bias_, (1, 1), (0, 0), (1, 1), 1), kwargs = {})
+    %add_1 : [num_users=1] = call_function[target=operator.add](args = (%input_tensor, %hidden_states_7), kwargs = {})
+    %output_tensor : [num_users=1] = call_function[target=operator.truediv](args = (%add_1, 1.0), kwargs = {})
+    return (output_tensor,)
