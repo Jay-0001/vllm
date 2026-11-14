@@ -1,0 +1,9 @@
+Sat Nov 14 17:09:23 UTC 2026
+a21b3d406c3bf6688a7e99d13c8ba1aed62f235f
+thesis/m2-fusion-boundary-screen
+66497aeb3e241488648d707b216bfd8e6b74e0f1ba4d4380c105762fc12e5ac5  benchmarks/kernels/m2_fusion_boundary/screen.py
+torch 2.14.0+cu132 CUDA 13.2 triton 3.8.0
+visible GPUs 1
+0.1.dev24300+g8530a778f.precompiled
+name, memory.total [MiB], driver_version
+NVIDIA A100-SXM4-40GB, 40960 MiB, 595.71.05
