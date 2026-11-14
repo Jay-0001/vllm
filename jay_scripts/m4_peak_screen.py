@@ -106,6 +106,18 @@ def main():
         torch.cuda.synchronize()
         del result
         gc.collect()
+        events = []
+        for _ in range(args.repeats):
+            begin = torch.cuda.Event(enable_timing=True)
+            end = torch.cuda.Event(enable_timing=True)
+            begin.record()
+            result = run()
+            end.record()
+            events.append((begin, end))
+        torch.cuda.synchronize()
+        latencies_ms = [begin.elapsed_time(end) for begin, end in events]
+        del result, events
+        gc.collect()
         torch.cuda.empty_cache()
         torch.cuda.reset_peak_memory_stats()
         baseline_allocated = torch.cuda.memory_allocated()
@@ -123,14 +135,8 @@ def main():
             stderr=subprocess.DEVNULL,
             text=True,
         )
-        events = []
         for _ in range(args.repeats):
-            begin = torch.cuda.Event(enable_timing=True)
-            end = torch.cuda.Event(enable_timing=True)
-            begin.record()
             result = run()
-            end.record()
-            events.append((begin, end))
         torch.cuda.synchronize()
         peak_allocated = torch.cuda.max_memory_allocated()
         peak_reserved = torch.cuda.max_memory_reserved()
@@ -147,7 +153,6 @@ def main():
             if line.strip().isdigit()
         ]
         driver_after = device_memory_mib()
-        latencies_ms = [begin.elapsed_time(end) for begin, end in events]
 
     record = {
         "arm": args.arm,

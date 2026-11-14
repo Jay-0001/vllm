@@ -44,7 +44,8 @@ Each task writes `result.json`, `environment.txt`, generated-code debug files,
 compiler cache, and a Slurm log under this directory. The two arms are fresh
 processes with separate compiler caches. The script records first-call compile
 time, CUDA event latency, numerical error, allocated/reserved peaks, and
-20 ms sampled device memory. The device samples can miss a short spike; use
+20 ms sampled device memory. Timing and memory use separate steady passes.
+The device samples can miss a short spike; use
 PyTorch's exact allocator peaks as the primary transient measure. Persistent
 weights and input remain live in both arms. No CUDA Graph or KV cache is used.
 
