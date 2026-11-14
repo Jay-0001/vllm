@@ -7,7 +7,7 @@
 #SBATCH --gpus-per-node=1
 #SBATCH --cpus-per-task=4
 #SBATCH --mem=64G
-#SBATCH --time=00:20:00
+#SBATCH --time=00:01:30
 #SBATCH --array=0-1%1
 #SBATCH --job-name=m2-diffusion
 #SBATCH --output=/u/jsaravananindira/vllm/jay_outputs/m2_diffusion_scout/slurm-%A_%a.out

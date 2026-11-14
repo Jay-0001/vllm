@@ -163,6 +163,7 @@ def profile_call(label, call, output, torch):
 
 
 def main():
+    process_start = time.perf_counter()
     args = parse_args()
     args.output.mkdir(parents=True, exist_ok=True)
     result = {
@@ -321,6 +322,7 @@ def main():
     except Exception:
         result["error"] = traceback.format_exc()
     finally:
+        result["process_wall_s"] = time.perf_counter() - process_start
         (args.output / "result.json").write_text(
             json.dumps(result, indent=2, default=str) + "\n"
         )

@@ -35,8 +35,8 @@ the experimental question. Record the actual path first.
 
 | Array task | Prefill length | Batch | A100 limit |
 | ---: | ---: | ---: | ---: |
-| 0 | 32 | 1 | 20 min |
-| 1 | 128 | 1 | 20 min |
+| 0 | 32 | 1 | 60 sec |
+| 1 | 128 | 1 | 60 sec |
 
 Each task has a separate cache, debug files, profiler traces and JSON result
 here; Slurm output is here too. Default array concurrency is one; override

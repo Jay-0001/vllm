@@ -36,10 +36,10 @@ weight download or Hugging Face login is needed.
 
 | Array task | Batch | Fusion benchmarking | A100 limit |
 | ---: | ---: | ---: | ---: |
-| 0 | 1 | off, stock | 20 min |
-| 1 | 1 | on | 20 min |
-| 2 | 2 | off, stock | 20 min |
-| 3 | 2 | on | 20 min |
+| 0 | 1 | off, stock | 90 sec |
+| 1 | 1 | on | 90 sec |
+| 2 | 2 | off, stock | 90 sec |
+| 3 | 2 | on | 90 sec |
 
 The default submission runs the batch-1 pair one GPU at a time. If it reveals
 a correct and distinct lowering, submit the held-out pair with

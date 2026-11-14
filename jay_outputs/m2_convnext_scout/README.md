@@ -19,10 +19,10 @@ quality claims. The input and weights use BF16 and channels-last memory format.
 
 | Array task | Batch | Layout optimization | A100 limit |
 | ---: | ---: | ---: | ---: |
-| 0 | 1 | on, stock | 20 min |
-| 1 | 1 | off | 20 min |
-| 2 | 4 | on, stock | 20 min |
-| 3 | 4 | off | 20 min |
+| 0 | 1 | on, stock | 60 sec |
+| 1 | 1 | off | 60 sec |
+| 2 | 4 | on, stock | 60 sec |
+| 3 | 4 | off | 60 sec |
 
 From `/u/jsaravananindira/vllm` on Delta's login node:
 
@@ -35,7 +35,7 @@ sbatch jay_scripts/m2_convnext.sbatch
 The default submission runs the batch-1 pair with one GPU at a time. If the
 pair compiles correctly and lowers differently, submit the held-out batch-4
 pair with `sbatch --array=2-3%2 jay_scripts/m2_convnext.sbatch`. Each task has
-its own 20-minute limit, cache, debug files, traces, and `result.json`
+its own 60-second limit, cache, debug files, traces, and `result.json`
 under this directory. The Slurm log is `slurm-<array-job>_<task>.out` here.
 The script refuses a local non-Slurm launch.
 
