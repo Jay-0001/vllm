@@ -54,9 +54,12 @@ weights and input remain live in both arms. No CUDA Graph or KV cache is used.
 First reject the motif if the stock generated code lacks a full avoidable
 intermediate. Otherwise compare paired shapes and inspect the difference
 between peak and baseline allocation. Check output error and compile time.
-One favorable shape is a lead, not a thesis result. Only a repeatable,
-material peak reduction within a stated latency target warrants alternating
-repetitions, a memory-pressure/OOM test, and an actual vLLM integration check.
+For this screen, use a provisional gate at 2048 tokens: at least 64 MiB lower
+incremental allocated peak, no more than 20% higher median graph latency, and
+relative L2 output error below 1%. These are screening thresholds, not a
+serving SLA. One favorable shape is a lead, not a thesis result. Only a
+repeatable result warrants alternating repetitions, a memory-pressure/OOM
+test, and an actual vLLM integration check with its own latency target.
 
 No extra Python package is required beyond the CUDA PyTorch, Triton, and vLLM
 already used in the Delta environment. `nvidia-smi` is required for sampled
