@@ -1,0 +1,8 @@
+Sat Nov 14 18:30:13 UTC 2026
+069220315aecb6ebdfb5a1225f6fb900b76737da
+thesis/m4-physical-peak
+python_bin=/u/jsaravananindira/vllm/.venv/bin/python
+name, memory.total [MiB], driver_version
+NVIDIA A100-SXM4-40GB, 40960 MiB, 595.71.05
+torch 2.14.0+cu132 triton 3.8.0 cuda 13.2
+vllm 0.1.dev24300+g8530a778f path /u/jsaravananindira/vllm-m4/vllm/__init__.py

@@ -1,0 +1,966 @@
+op0: ExternKernelSchedulerNode(ExternKernelOut)
+op0.writes = [StarDep(name='buf0', mode=None)]
+op0.unmet_dependencies = []
+op0.met_dependencies = [StarDep(name='arg0_1', mode=None), StarDep(name='arg1_1', mode=None)]
+op0.min_input_distance = 0
+op0.max_input_distance = 0
+op0.outputs = [
+    buf0: ExternKernelOut
+    buf0.layout = FixedLayout('cuda:0', torch.bfloat16, size=[2048, 2048], stride=[2048, 1])
+    buf0.users = [NodeUser(node=SchedulerNode(name='op2'), can_inplace=True, is_weak=False)]
+]
+op0.node.kernel = extern_kernels.mm
+
+
+op1: ExternKernelSchedulerNode(ExternKernelOut)
+op1.writes = [StarDep(name='buf1', mode=None)]
+op1.unmet_dependencies = []
+op1.met_dependencies = [StarDep(name='arg1_1', mode=None), StarDep(name='arg2_1', mode=None)]
+op1.min_input_distance = 0
+op1.max_input_distance = 0
+op1.outputs = [
+    buf1: ExternKernelOut
+    buf1.layout = FixedLayout('cuda:0', torch.bfloat16, size=[2048, 2048], stride=[2048, 1])
+    buf1.users = [NodeUser(node=SchedulerNode(name='op2'), can_inplace=True, is_weak=False)]
+]
+op1.node.kernel = extern_kernels.mm
+
+
+op2: SchedulerNode(ComputedBuffer)
+op2.writes = [MemoryDep('buf2', c0, {c0: 4194304})]
+op2.unmet_dependencies = [MemoryDep('buf0', c0, {c0: 4194304}), MemoryDep('buf1', c0, {c0: 4194304})]
+op2.met_dependencies = []
+op2.min_input_distance = 1
+op2.max_input_distance = 1
+op2.outputs = [
+    buf2: ComputedBuffer
+    buf2.layout = FixedLayout('cuda:0', torch.bfloat16, size=[2048, 2048], stride=[2048, 1])
+    buf2.users = [NodeUser(node=ExternKernelSchedulerNode(name='op3'), can_inplace=False, is_weak=False)]
+]
+op2.group.device = cuda:0
+op2.group.iteration = (4194304, 1)
+op2.sizes = ((4194304,), ())
+buf0_layout = FixedLayout('cuda:0', torch.bfloat16, size=[2048, 2048], stride=[2048, 1])
+buf1_layout = FixedLayout('cuda:0', torch.bfloat16, size=[2048, 2048], stride=[2048, 1])
+buf2_layout = FixedLayout('cuda:0', torch.bfloat16, size=[2048, 2048], stride=[2048, 1])
+class op2_loop_body:
+    var_ranges = {p0: 4194304}
+    index0 = p0
+    def body(self, ops):
+        get_index = self.get_index('index0')
+        load = ops.load('buf0', get_index)
+        to_dtype = ops.to_dtype(load, torch.float32, src_dtype = torch.bfloat16, use_compute_types = True)
+        get_index_1 = self.get_index('index0')
+        load_1 = ops.load('buf0', get_index_1)
+        to_dtype_1 = ops.to_dtype(load_1, torch.float32, src_dtype = torch.bfloat16, use_compute_types = True)
+        neg = ops.neg(to_dtype_1)
+        exp = ops.exp(neg)
+        constant = ops.constant(1.0, torch.float32)
+        add = ops.add(exp, constant)
+        truediv = ops.truediv(to_dtype, add)
+        to_dtype_2 = ops.to_dtype(truediv, torch.bfloat16, src_dtype = torch.float32, use_compute_types = True)
+        get_index_2 = self.get_index('index0')
+        load_2 = ops.load('buf1', get_index_2)
+        mul = ops.mul(to_dtype_2, load_2)
+        get_index_3 = self.get_index('index0')
+        store = ops.store('buf2', get_index_3, mul, None)
+        return store
+
+
+op3: ExternKernelSchedulerNode(ExternKernelOut)
+op3.writes = [StarDep(name='buf3', mode=None)]
+op3.unmet_dependencies = [StarDep(name='buf2', mode=None)]
+op3.met_dependencies = [StarDep(name='arg3_1', mode=None)]
+op3.min_input_distance = 2
+op3.max_input_distance = 2
+op3.outputs = [
+    buf3: ExternKernelOut
+    buf3.layout = FixedLayout('cuda:0', torch.bfloat16, size=[2048, 3584], stride=[3584, 1])
+    buf3.users = [NodeUser(node=SchedulerNode(name='op36'), can_inplace=True, is_weak=False)]
+]
+op3.node.kernel = extern_kernels.mm
+
+
+op4: ExternKernelSchedulerNode(ExternKernelOut)
+op4.writes = [StarDep(name='buf4', mode=None)]
+op4.unmet_dependencies = []
+op4.met_dependencies = [StarDep(name='arg0_1', mode=None), StarDep(name='arg1_1', mode=None)]
+op4.min_input_distance = 0
+op4.max_input_distance = 0
+op4.outputs = [
+    buf4: ExternKernelOut
+    buf4.layout = FixedLayout('cuda:0', torch.bfloat16, size=[2048, 2048], stride=[2048, 1])
+    buf4.users = [NodeUser(node=SchedulerNode(name='op6'), can_inplace=True, is_weak=False)]
+]
+op4.node.kernel = extern_kernels.mm
+
+
+op5: ExternKernelSchedulerNode(ExternKernelOut)
+op5.writes = [StarDep(name='buf5', mode=None)]
+op5.unmet_dependencies = []
+op5.met_dependencies = [StarDep(name='arg1_1', mode=None), StarDep(name='arg2_1', mode=None)]
+op5.min_input_distance = 0
+op5.max_input_distance = 0
+op5.outputs = [
+    buf5: ExternKernelOut
+    buf5.layout = FixedLayout('cuda:0', torch.bfloat16, size=[2048, 2048], stride=[2048, 1])
+    buf5.users = [NodeUser(node=SchedulerNode(name='op6'), can_inplace=True, is_weak=False)]
+]
+op5.node.kernel = extern_kernels.mm
+
+
+op6: SchedulerNode(ComputedBuffer)
+op6.writes = [MemoryDep('buf6', c0, {c0: 4194304})]
+op6.unmet_dependencies = [MemoryDep('buf4', c0, {c0: 4194304}), MemoryDep('buf5', c0, {c0: 4194304})]
+op6.met_dependencies = []
+op6.min_input_distance = 1
+op6.max_input_distance = 1
+op6.outputs = [
+    buf6: ComputedBuffer
+    buf6.layout = FixedLayout('cuda:0', torch.bfloat16, size=[2048, 2048], stride=[2048, 1])
+    buf6.users = [NodeUser(node=ExternKernelSchedulerNode(name='op7'), can_inplace=False, is_weak=False)]
+]
+op6.group.device = cuda:0
+op6.group.iteration = (4194304, 1)
+op6.sizes = ((4194304,), ())
+buf4_layout = FixedLayout('cuda:0', torch.bfloat16, size=[2048, 2048], stride=[2048, 1])
+buf5_layout = FixedLayout('cuda:0', torch.bfloat16, size=[2048, 2048], stride=[2048, 1])
+buf6_layout = FixedLayout('cuda:0', torch.bfloat16, size=[2048, 2048], stride=[2048, 1])
+class op6_loop_body:
+    var_ranges = {p0: 4194304}
+    index0 = p0
+    def body(self, ops):
+        get_index = self.get_index('index0')
+        load = ops.load('buf4', get_index)
+        to_dtype = ops.to_dtype(load, torch.float32, src_dtype = torch.bfloat16, use_compute_types = True)
+        get_index_1 = self.get_index('index0')
+        load_1 = ops.load('buf4', get_index_1)
+        to_dtype_1 = ops.to_dtype(load_1, torch.float32, src_dtype = torch.bfloat16, use_compute_types = True)
+        neg = ops.neg(to_dtype_1)
+        exp = ops.exp(neg)
+        constant = ops.constant(1.0, torch.float32)
+        add = ops.add(exp, constant)
+        truediv = ops.truediv(to_dtype, add)
+        to_dtype_2 = ops.to_dtype(truediv, torch.bfloat16, src_dtype = torch.float32, use_compute_types = True)
+        get_index_2 = self.get_index('index0')
+        load_2 = ops.load('buf5', get_index_2)
+        mul = ops.mul(to_dtype_2, load_2)
+        get_index_3 = self.get_index('index0')
+        store = ops.store('buf6', get_index_3, mul, None)
+        return store
+
+
+op7: ExternKernelSchedulerNode(ExternKernelOut)
+op7.writes = [StarDep(name='buf7', mode=None)]
+op7.unmet_dependencies = [StarDep(name='buf6', mode=None)]
+op7.met_dependencies = [StarDep(name='arg3_1', mode=None)]
+op7.min_input_distance = 2
+op7.max_input_distance = 2
+op7.outputs = [
+    buf7: ExternKernelOut
+    buf7.layout = FixedLayout('cuda:0', torch.bfloat16, size=[2048, 3584], stride=[3584, 1])
+    buf7.users = [NodeUser(node=SchedulerNode(name='op36'), can_inplace=True, is_weak=False)]
+]
+op7.node.kernel = extern_kernels.mm
+
+
+op8: ExternKernelSchedulerNode(ExternKernelOut)
+op8.writes = [StarDep(name='buf8', mode=None)]
+op8.unmet_dependencies = []
+op8.met_dependencies = [StarDep(name='arg0_1', mode=None), StarDep(name='arg1_1', mode=None)]
+op8.min_input_distance = 0
+op8.max_input_distance = 0
+op8.outputs = [
+    buf8: ExternKernelOut
+    buf8.layout = FixedLayout('cuda:0', torch.bfloat16, size=[2048, 2048], stride=[2048, 1])
+    buf8.users = [NodeUser(node=SchedulerNode(name='op10'), can_inplace=True, is_weak=False)]
+]
+op8.node.kernel = extern_kernels.mm
+
+
+op9: ExternKernelSchedulerNode(ExternKernelOut)
+op9.writes = [StarDep(name='buf9', mode=None)]
+op9.unmet_dependencies = []
+op9.met_dependencies = [StarDep(name='arg1_1', mode=None), StarDep(name='arg2_1', mode=None)]
+op9.min_input_distance = 0
+op9.max_input_distance = 0
+op9.outputs = [
+    buf9: ExternKernelOut
+    buf9.layout = FixedLayout('cuda:0', torch.bfloat16, size=[2048, 2048], stride=[2048, 1])
+    buf9.users = [NodeUser(node=SchedulerNode(name='op10'), can_inplace=True, is_weak=False)]
+]
+op9.node.kernel = extern_kernels.mm
+
+
+op10: SchedulerNode(ComputedBuffer)
+op10.writes = [MemoryDep('buf10', c0, {c0: 4194304})]
+op10.unmet_dependencies = [MemoryDep('buf8', c0, {c0: 4194304}), MemoryDep('buf9', c0, {c0: 4194304})]
+op10.met_dependencies = []
+op10.min_input_distance = 1
+op10.max_input_distance = 1
+op10.outputs = [
+    buf10: ComputedBuffer
+    buf10.layout = FixedLayout('cuda:0', torch.bfloat16, size=[2048, 2048], stride=[2048, 1])
+    buf10.users = [NodeUser(node=ExternKernelSchedulerNode(name='op11'), can_inplace=False, is_weak=False)]
+]
+op10.group.device = cuda:0
+op10.group.iteration = (4194304, 1)
+op10.sizes = ((4194304,), ())
+buf8_layout = FixedLayout('cuda:0', torch.bfloat16, size=[2048, 2048], stride=[2048, 1])
+buf9_layout = FixedLayout('cuda:0', torch.bfloat16, size=[2048, 2048], stride=[2048, 1])
+buf10_layout = FixedLayout('cuda:0', torch.bfloat16, size=[2048, 2048], stride=[2048, 1])
+class op10_loop_body:
+    var_ranges = {p0: 4194304}
+    index0 = p0
+    def body(self, ops):
+        get_index = self.get_index('index0')
+        load = ops.load('buf8', get_index)
+        to_dtype = ops.to_dtype(load, torch.float32, src_dtype = torch.bfloat16, use_compute_types = True)
+        get_index_1 = self.get_index('index0')
+        load_1 = ops.load('buf8', get_index_1)
+        to_dtype_1 = ops.to_dtype(load_1, torch.float32, src_dtype = torch.bfloat16, use_compute_types = True)
+        neg = ops.neg(to_dtype_1)
+        exp = ops.exp(neg)
+        constant = ops.constant(1.0, torch.float32)
+        add = ops.add(exp, constant)
+        truediv = ops.truediv(to_dtype, add)
+        to_dtype_2 = ops.to_dtype(truediv, torch.bfloat16, src_dtype = torch.float32, use_compute_types = True)
+        get_index_2 = self.get_index('index0')
+        load_2 = ops.load('buf9', get_index_2)
+        mul = ops.mul(to_dtype_2, load_2)
+        get_index_3 = self.get_index('index0')
+        store = ops.store('buf10', get_index_3, mul, None)
+        return store
+
+
+op11: ExternKernelSchedulerNode(ExternKernelOut)
+op11.writes = [StarDep(name='buf11', mode=None)]
+op11.unmet_dependencies = [StarDep(name='buf10', mode=None)]
+op11.met_dependencies = [StarDep(name='arg3_1', mode=None)]
+op11.min_input_distance = 2
+op11.max_input_distance = 2
+op11.outputs = [
+    buf11: ExternKernelOut
+    buf11.layout = FixedLayout('cuda:0', torch.bfloat16, size=[2048, 3584], stride=[3584, 1])
+    buf11.users = [NodeUser(node=SchedulerNode(name='op36'), can_inplace=True, is_weak=False)]
+]
+op11.node.kernel = extern_kernels.mm
+
+
+op12: ExternKernelSchedulerNode(ExternKernelOut)
+op12.writes = [StarDep(name='buf12', mode=None)]
+op12.unmet_dependencies = []
+op12.met_dependencies = [StarDep(name='arg0_1', mode=None), StarDep(name='arg1_1', mode=None)]
+op12.min_input_distance = 0
+op12.max_input_distance = 0
+op12.outputs = [
+    buf12: ExternKernelOut
+    buf12.layout = FixedLayout('cuda:0', torch.bfloat16, size=[2048, 2048], stride=[2048, 1])
+    buf12.users = [NodeUser(node=SchedulerNode(name='op14'), can_inplace=True, is_weak=False)]
+]
+op12.node.kernel = extern_kernels.mm
+
+
+op13: ExternKernelSchedulerNode(ExternKernelOut)
+op13.writes = [StarDep(name='buf13', mode=None)]
+op13.unmet_dependencies = []
+op13.met_dependencies = [StarDep(name='arg1_1', mode=None), StarDep(name='arg2_1', mode=None)]
+op13.min_input_distance = 0
+op13.max_input_distance = 0
+op13.outputs = [
+    buf13: ExternKernelOut
+    buf13.layout = FixedLayout('cuda:0', torch.bfloat16, size=[2048, 2048], stride=[2048, 1])
+    buf13.users = [NodeUser(node=SchedulerNode(name='op14'), can_inplace=True, is_weak=False)]
+]
+op13.node.kernel = extern_kernels.mm
+
+
+op14: SchedulerNode(ComputedBuffer)
+op14.writes = [MemoryDep('buf14', c0, {c0: 4194304})]
+op14.unmet_dependencies = [MemoryDep('buf12', c0, {c0: 4194304}), MemoryDep('buf13', c0, {c0: 4194304})]
+op14.met_dependencies = []
+op14.min_input_distance = 1
+op14.max_input_distance = 1
+op14.outputs = [
+    buf14: ComputedBuffer
+    buf14.layout = FixedLayout('cuda:0', torch.bfloat16, size=[2048, 2048], stride=[2048, 1])
+    buf14.users = [NodeUser(node=ExternKernelSchedulerNode(name='op15'), can_inplace=False, is_weak=False)]
+]
+op14.group.device = cuda:0
+op14.group.iteration = (4194304, 1)
+op14.sizes = ((4194304,), ())
+buf12_layout = FixedLayout('cuda:0', torch.bfloat16, size=[2048, 2048], stride=[2048, 1])
+buf13_layout = FixedLayout('cuda:0', torch.bfloat16, size=[2048, 2048], stride=[2048, 1])
+buf14_layout = FixedLayout('cuda:0', torch.bfloat16, size=[2048, 2048], stride=[2048, 1])
+class op14_loop_body:
+    var_ranges = {p0: 4194304}
+    index0 = p0
+    def body(self, ops):
+        get_index = self.get_index('index0')
+        load = ops.load('buf12', get_index)
+        to_dtype = ops.to_dtype(load, torch.float32, src_dtype = torch.bfloat16, use_compute_types = True)
+        get_index_1 = self.get_index('index0')
+        load_1 = ops.load('buf12', get_index_1)
+        to_dtype_1 = ops.to_dtype(load_1, torch.float32, src_dtype = torch.bfloat16, use_compute_types = True)
+        neg = ops.neg(to_dtype_1)
+        exp = ops.exp(neg)
+        constant = ops.constant(1.0, torch.float32)
+        add = ops.add(exp, constant)
+        truediv = ops.truediv(to_dtype, add)
+        to_dtype_2 = ops.to_dtype(truediv, torch.bfloat16, src_dtype = torch.float32, use_compute_types = True)
+        get_index_2 = self.get_index('index0')
+        load_2 = ops.load('buf13', get_index_2)
+        mul = ops.mul(to_dtype_2, load_2)
+        get_index_3 = self.get_index('index0')
+        store = ops.store('buf14', get_index_3, mul, None)
+        return store
+
+
+op15: ExternKernelSchedulerNode(ExternKernelOut)
+op15.writes = [StarDep(name='buf15', mode=None)]
+op15.unmet_dependencies = [StarDep(name='buf14', mode=None)]
+op15.met_dependencies = [StarDep(name='arg3_1', mode=None)]
+op15.min_input_distance = 2
+op15.max_input_distance = 2
+op15.outputs = [
+    buf15: ExternKernelOut
+    buf15.layout = FixedLayout('cuda:0', torch.bfloat16, size=[2048, 3584], stride=[3584, 1])
+    buf15.users = [NodeUser(node=SchedulerNode(name='op36'), can_inplace=True, is_weak=False)]
+]
+op15.node.kernel = extern_kernels.mm
+
+
+op16: ExternKernelSchedulerNode(ExternKernelOut)
+op16.writes = [StarDep(name='buf16', mode=None)]
+op16.unmet_dependencies = []
+op16.met_dependencies = [StarDep(name='arg0_1', mode=None), StarDep(name='arg1_1', mode=None)]
+op16.min_input_distance = 0
+op16.max_input_distance = 0
+op16.outputs = [
+    buf16: ExternKernelOut
+    buf16.layout = FixedLayout('cuda:0', torch.bfloat16, size=[2048, 2048], stride=[2048, 1])
+    buf16.users = [NodeUser(node=SchedulerNode(name='op18'), can_inplace=True, is_weak=False)]
+]
+op16.node.kernel = extern_kernels.mm
+
+
+op17: ExternKernelSchedulerNode(ExternKernelOut)
+op17.writes = [StarDep(name='buf17', mode=None)]
+op17.unmet_dependencies = []
+op17.met_dependencies = [StarDep(name='arg1_1', mode=None), StarDep(name='arg2_1', mode=None)]
+op17.min_input_distance = 0
+op17.max_input_distance = 0
+op17.outputs = [
+    buf17: ExternKernelOut
+    buf17.layout = FixedLayout('cuda:0', torch.bfloat16, size=[2048, 2048], stride=[2048, 1])
+    buf17.users = [NodeUser(node=SchedulerNode(name='op18'), can_inplace=True, is_weak=False)]
+]
+op17.node.kernel = extern_kernels.mm
+
+
+op18: SchedulerNode(ComputedBuffer)
+op18.writes = [MemoryDep('buf18', c0, {c0: 4194304})]
+op18.unmet_dependencies = [MemoryDep('buf16', c0, {c0: 4194304}), MemoryDep('buf17', c0, {c0: 4194304})]
+op18.met_dependencies = []
+op18.min_input_distance = 1
+op18.max_input_distance = 1
+op18.outputs = [
+    buf18: ComputedBuffer
+    buf18.layout = FixedLayout('cuda:0', torch.bfloat16, size=[2048, 2048], stride=[2048, 1])
+    buf18.users = [NodeUser(node=ExternKernelSchedulerNode(name='op19'), can_inplace=False, is_weak=False)]
+]
+op18.group.device = cuda:0
+op18.group.iteration = (4194304, 1)
+op18.sizes = ((4194304,), ())
+buf16_layout = FixedLayout('cuda:0', torch.bfloat16, size=[2048, 2048], stride=[2048, 1])
+buf17_layout = FixedLayout('cuda:0', torch.bfloat16, size=[2048, 2048], stride=[2048, 1])
+buf18_layout = FixedLayout('cuda:0', torch.bfloat16, size=[2048, 2048], stride=[2048, 1])
+class op18_loop_body:
+    var_ranges = {p0: 4194304}
+    index0 = p0
+    def body(self, ops):
+        get_index = self.get_index('index0')
+        load = ops.load('buf16', get_index)
+        to_dtype = ops.to_dtype(load, torch.float32, src_dtype = torch.bfloat16, use_compute_types = True)
+        get_index_1 = self.get_index('index0')
+        load_1 = ops.load('buf16', get_index_1)
+        to_dtype_1 = ops.to_dtype(load_1, torch.float32, src_dtype = torch.bfloat16, use_compute_types = True)
+        neg = ops.neg(to_dtype_1)
+        exp = ops.exp(neg)
+        constant = ops.constant(1.0, torch.float32)
+        add = ops.add(exp, constant)
+        truediv = ops.truediv(to_dtype, add)
+        to_dtype_2 = ops.to_dtype(truediv, torch.bfloat16, src_dtype = torch.float32, use_compute_types = True)
+        get_index_2 = self.get_index('index0')
+        load_2 = ops.load('buf17', get_index_2)
+        mul = ops.mul(to_dtype_2, load_2)
+        get_index_3 = self.get_index('index0')
+        store = ops.store('buf18', get_index_3, mul, None)
+        return store
+
+
+op19: ExternKernelSchedulerNode(ExternKernelOut)
+op19.writes = [StarDep(name='buf19', mode=None)]
+op19.unmet_dependencies = [StarDep(name='buf18', mode=None)]
+op19.met_dependencies = [StarDep(name='arg3_1', mode=None)]
+op19.min_input_distance = 2
+op19.max_input_distance = 2
+op19.outputs = [
+    buf19: ExternKernelOut
+    buf19.layout = FixedLayout('cuda:0', torch.bfloat16, size=[2048, 3584], stride=[3584, 1])
+    buf19.users = [NodeUser(node=SchedulerNode(name='op36'), can_inplace=True, is_weak=False)]
+]
+op19.node.kernel = extern_kernels.mm
+
+
+op20: ExternKernelSchedulerNode(ExternKernelOut)
+op20.writes = [StarDep(name='buf20', mode=None)]
+op20.unmet_dependencies = []
+op20.met_dependencies = [StarDep(name='arg0_1', mode=None), StarDep(name='arg1_1', mode=None)]
+op20.min_input_distance = 0
+op20.max_input_distance = 0
+op20.outputs = [
+    buf20: ExternKernelOut
+    buf20.layout = FixedLayout('cuda:0', torch.bfloat16, size=[2048, 2048], stride=[2048, 1])
+    buf20.users = [NodeUser(node=SchedulerNode(name='op22'), can_inplace=True, is_weak=False)]
+]
+op20.node.kernel = extern_kernels.mm
+
+
+op21: ExternKernelSchedulerNode(ExternKernelOut)
+op21.writes = [StarDep(name='buf21', mode=None)]
+op21.unmet_dependencies = []
+op21.met_dependencies = [StarDep(name='arg1_1', mode=None), StarDep(name='arg2_1', mode=None)]
+op21.min_input_distance = 0
+op21.max_input_distance = 0
+op21.outputs = [
+    buf21: ExternKernelOut
+    buf21.layout = FixedLayout('cuda:0', torch.bfloat16, size=[2048, 2048], stride=[2048, 1])
+    buf21.users = [NodeUser(node=SchedulerNode(name='op22'), can_inplace=True, is_weak=False)]
+]
+op21.node.kernel = extern_kernels.mm
+
+
+op22: SchedulerNode(ComputedBuffer)
+op22.writes = [MemoryDep('buf22', c0, {c0: 4194304})]
+op22.unmet_dependencies = [MemoryDep('buf20', c0, {c0: 4194304}), MemoryDep('buf21', c0, {c0: 4194304})]
+op22.met_dependencies = []
+op22.min_input_distance = 1
+op22.max_input_distance = 1
+op22.outputs = [
+    buf22: ComputedBuffer
+    buf22.layout = FixedLayout('cuda:0', torch.bfloat16, size=[2048, 2048], stride=[2048, 1])
+    buf22.users = [NodeUser(node=ExternKernelSchedulerNode(name='op23'), can_inplace=False, is_weak=False)]
+]
+op22.group.device = cuda:0
+op22.group.iteration = (4194304, 1)
+op22.sizes = ((4194304,), ())
+buf20_layout = FixedLayout('cuda:0', torch.bfloat16, size=[2048, 2048], stride=[2048, 1])
+buf21_layout = FixedLayout('cuda:0', torch.bfloat16, size=[2048, 2048], stride=[2048, 1])
+buf22_layout = FixedLayout('cuda:0', torch.bfloat16, size=[2048, 2048], stride=[2048, 1])
+class op22_loop_body:
+    var_ranges = {p0: 4194304}
+    index0 = p0
+    def body(self, ops):
+        get_index = self.get_index('index0')
+        load = ops.load('buf20', get_index)
+        to_dtype = ops.to_dtype(load, torch.float32, src_dtype = torch.bfloat16, use_compute_types = True)
+        get_index_1 = self.get_index('index0')
+        load_1 = ops.load('buf20', get_index_1)
+        to_dtype_1 = ops.to_dtype(load_1, torch.float32, src_dtype = torch.bfloat16, use_compute_types = True)
+        neg = ops.neg(to_dtype_1)
+        exp = ops.exp(neg)
+        constant = ops.constant(1.0, torch.float32)
+        add = ops.add(exp, constant)
+        truediv = ops.truediv(to_dtype, add)
+        to_dtype_2 = ops.to_dtype(truediv, torch.bfloat16, src_dtype = torch.float32, use_compute_types = True)
+        get_index_2 = self.get_index('index0')
+        load_2 = ops.load('buf21', get_index_2)
+        mul = ops.mul(to_dtype_2, load_2)
+        get_index_3 = self.get_index('index0')
+        store = ops.store('buf22', get_index_3, mul, None)
+        return store
+
+
+op23: ExternKernelSchedulerNode(ExternKernelOut)
+op23.writes = [StarDep(name='buf23', mode=None)]
+op23.unmet_dependencies = [StarDep(name='buf22', mode=None)]
+op23.met_dependencies = [StarDep(name='arg3_1', mode=None)]
+op23.min_input_distance = 2
+op23.max_input_distance = 2
+op23.outputs = [
+    buf23: ExternKernelOut
+    buf23.layout = FixedLayout('cuda:0', torch.bfloat16, size=[2048, 3584], stride=[3584, 1])
+    buf23.users = [NodeUser(node=SchedulerNode(name='op36'), can_inplace=True, is_weak=False)]
+]
+op23.node.kernel = extern_kernels.mm
+
+
+op24: ExternKernelSchedulerNode(ExternKernelOut)
+op24.writes = [StarDep(name='buf24', mode=None)]
+op24.unmet_dependencies = []
+op24.met_dependencies = [StarDep(name='arg0_1', mode=None), StarDep(name='arg1_1', mode=None)]
+op24.min_input_distance = 0
+op24.max_input_distance = 0
+op24.outputs = [
+    buf24: ExternKernelOut
+    buf24.layout = FixedLayout('cuda:0', torch.bfloat16, size=[2048, 2048], stride=[2048, 1])
+    buf24.users = [NodeUser(node=SchedulerNode(name='op26'), can_inplace=True, is_weak=False)]
+]
+op24.node.kernel = extern_kernels.mm
+
+
+op25: ExternKernelSchedulerNode(ExternKernelOut)
+op25.writes = [StarDep(name='buf25', mode=None)]
+op25.unmet_dependencies = []
+op25.met_dependencies = [StarDep(name='arg1_1', mode=None), StarDep(name='arg2_1', mode=None)]
+op25.min_input_distance = 0
+op25.max_input_distance = 0
+op25.outputs = [
+    buf25: ExternKernelOut
+    buf25.layout = FixedLayout('cuda:0', torch.bfloat16, size=[2048, 2048], stride=[2048, 1])
+    buf25.users = [NodeUser(node=SchedulerNode(name='op26'), can_inplace=True, is_weak=False)]
+]
+op25.node.kernel = extern_kernels.mm
+
+
+op26: SchedulerNode(ComputedBuffer)
+op26.writes = [MemoryDep('buf26', c0, {c0: 4194304})]
+op26.unmet_dependencies = [MemoryDep('buf24', c0, {c0: 4194304}), MemoryDep('buf25', c0, {c0: 4194304})]
+op26.met_dependencies = []
+op26.min_input_distance = 1
+op26.max_input_distance = 1
+op26.outputs = [
+    buf26: ComputedBuffer
+    buf26.layout = FixedLayout('cuda:0', torch.bfloat16, size=[2048, 2048], stride=[2048, 1])
+    buf26.users = [NodeUser(node=ExternKernelSchedulerNode(name='op27'), can_inplace=False, is_weak=False)]
+]
+op26.group.device = cuda:0
+op26.group.iteration = (4194304, 1)
+op26.sizes = ((4194304,), ())
+buf24_layout = FixedLayout('cuda:0', torch.bfloat16, size=[2048, 2048], stride=[2048, 1])
+buf25_layout = FixedLayout('cuda:0', torch.bfloat16, size=[2048, 2048], stride=[2048, 1])
+buf26_layout = FixedLayout('cuda:0', torch.bfloat16, size=[2048, 2048], stride=[2048, 1])
+class op26_loop_body:
+    var_ranges = {p0: 4194304}
+    index0 = p0
+    def body(self, ops):
+        get_index = self.get_index('index0')
+        load = ops.load('buf24', get_index)
+        to_dtype = ops.to_dtype(load, torch.float32, src_dtype = torch.bfloat16, use_compute_types = True)
+        get_index_1 = self.get_index('index0')
+        load_1 = ops.load('buf24', get_index_1)
+        to_dtype_1 = ops.to_dtype(load_1, torch.float32, src_dtype = torch.bfloat16, use_compute_types = True)
+        neg = ops.neg(to_dtype_1)
+        exp = ops.exp(neg)
+        constant = ops.constant(1.0, torch.float32)
+        add = ops.add(exp, constant)
+        truediv = ops.truediv(to_dtype, add)
+        to_dtype_2 = ops.to_dtype(truediv, torch.bfloat16, src_dtype = torch.float32, use_compute_types = True)
+        get_index_2 = self.get_index('index0')
+        load_2 = ops.load('buf25', get_index_2)
+        mul = ops.mul(to_dtype_2, load_2)
+        get_index_3 = self.get_index('index0')
+        store = ops.store('buf26', get_index_3, mul, None)
+        return store
+
+
+op27: ExternKernelSchedulerNode(ExternKernelOut)
+op27.writes = [StarDep(name='buf27', mode=None)]
+op27.unmet_dependencies = [StarDep(name='buf26', mode=None)]
+op27.met_dependencies = [StarDep(name='arg3_1', mode=None)]
+op27.min_input_distance = 2
+op27.max_input_distance = 2
+op27.outputs = [
+    buf27: ExternKernelOut
+    buf27.layout = FixedLayout('cuda:0', torch.bfloat16, size=[2048, 3584], stride=[3584, 1])
+    buf27.users = [NodeUser(node=SchedulerNode(name='op36'), can_inplace=True, is_weak=False)]
+]
+op27.node.kernel = extern_kernels.mm
+
+
+op28: ExternKernelSchedulerNode(ExternKernelOut)
+op28.writes = [StarDep(name='buf28', mode=None)]
+op28.unmet_dependencies = []
+op28.met_dependencies = [StarDep(name='arg0_1', mode=None), StarDep(name='arg1_1', mode=None)]
+op28.min_input_distance = 0
+op28.max_input_distance = 0
+op28.outputs = [
+    buf28: ExternKernelOut
+    buf28.layout = FixedLayout('cuda:0', torch.bfloat16, size=[2048, 2048], stride=[2048, 1])
+    buf28.users = [NodeUser(node=SchedulerNode(name='op30'), can_inplace=True, is_weak=False)]
+]
+op28.node.kernel = extern_kernels.mm
+
+
+op29: ExternKernelSchedulerNode(ExternKernelOut)
+op29.writes = [StarDep(name='buf29', mode=None)]
+op29.unmet_dependencies = []
+op29.met_dependencies = [StarDep(name='arg1_1', mode=None), StarDep(name='arg2_1', mode=None)]
+op29.min_input_distance = 0
+op29.max_input_distance = 0
+op29.outputs = [
+    buf29: ExternKernelOut
+    buf29.layout = FixedLayout('cuda:0', torch.bfloat16, size=[2048, 2048], stride=[2048, 1])
+    buf29.users = [NodeUser(node=SchedulerNode(name='op30'), can_inplace=True, is_weak=False)]
+]
+op29.node.kernel = extern_kernels.mm
+
+
+op30: SchedulerNode(ComputedBuffer)
+op30.writes = [MemoryDep('buf30', c0, {c0: 4194304})]
+op30.unmet_dependencies = [MemoryDep('buf28', c0, {c0: 4194304}), MemoryDep('buf29', c0, {c0: 4194304})]
+op30.met_dependencies = []
+op30.min_input_distance = 1
+op30.max_input_distance = 1
+op30.outputs = [
+    buf30: ComputedBuffer
+    buf30.layout = FixedLayout('cuda:0', torch.bfloat16, size=[2048, 2048], stride=[2048, 1])
+    buf30.users = [NodeUser(node=ExternKernelSchedulerNode(name='op31'), can_inplace=False, is_weak=False)]
+]
+op30.group.device = cuda:0
+op30.group.iteration = (4194304, 1)
+op30.sizes = ((4194304,), ())
+buf28_layout = FixedLayout('cuda:0', torch.bfloat16, size=[2048, 2048], stride=[2048, 1])
+buf29_layout = FixedLayout('cuda:0', torch.bfloat16, size=[2048, 2048], stride=[2048, 1])
+buf30_layout = FixedLayout('cuda:0', torch.bfloat16, size=[2048, 2048], stride=[2048, 1])
+class op30_loop_body:
+    var_ranges = {p0: 4194304}
+    index0 = p0
+    def body(self, ops):
+        get_index = self.get_index('index0')
+        load = ops.load('buf28', get_index)
+        to_dtype = ops.to_dtype(load, torch.float32, src_dtype = torch.bfloat16, use_compute_types = True)
+        get_index_1 = self.get_index('index0')
+        load_1 = ops.load('buf28', get_index_1)
+        to_dtype_1 = ops.to_dtype(load_1, torch.float32, src_dtype = torch.bfloat16, use_compute_types = True)
+        neg = ops.neg(to_dtype_1)
+        exp = ops.exp(neg)
+        constant = ops.constant(1.0, torch.float32)
+        add = ops.add(exp, constant)
+        truediv = ops.truediv(to_dtype, add)
+        to_dtype_2 = ops.to_dtype(truediv, torch.bfloat16, src_dtype = torch.float32, use_compute_types = True)
+        get_index_2 = self.get_index('index0')
+        load_2 = ops.load('buf29', get_index_2)
+        mul = ops.mul(to_dtype_2, load_2)
+        get_index_3 = self.get_index('index0')
+        store = ops.store('buf30', get_index_3, mul, None)
+        return store
+
+
+op31: ExternKernelSchedulerNode(ExternKernelOut)
+op31.writes = [StarDep(name='buf31', mode=None)]
+op31.unmet_dependencies = [StarDep(name='buf30', mode=None)]
+op31.met_dependencies = [StarDep(name='arg3_1', mode=None)]
+op31.min_input_distance = 2
+op31.max_input_distance = 2
+op31.outputs = [
+    buf31: ExternKernelOut
+    buf31.layout = FixedLayout('cuda:0', torch.bfloat16, size=[2048, 3584], stride=[3584, 1])
+    buf31.users = [NodeUser(node=SchedulerNode(name='op36'), can_inplace=True, is_weak=False)]
+]
+op31.node.kernel = extern_kernels.mm
+
+
+op32: ExternKernelSchedulerNode(ExternKernelOut)
+op32.writes = [StarDep(name='buf32', mode=None)]
+op32.unmet_dependencies = []
+op32.met_dependencies = [StarDep(name='arg0_1', mode=None), StarDep(name='arg1_1', mode=None)]
+op32.min_input_distance = 0
+op32.max_input_distance = 0
+op32.outputs = [
+    buf32: ExternKernelOut
+    buf32.layout = FixedLayout('cuda:0', torch.bfloat16, size=[2048, 2048], stride=[2048, 1])
+    buf32.users = [NodeUser(node=SchedulerNode(name='op34'), can_inplace=True, is_weak=False)]
+]
+op32.node.kernel = extern_kernels.mm
+
+
+op33: ExternKernelSchedulerNode(ExternKernelOut)
+op33.writes = [StarDep(name='buf33', mode=None)]
+op33.unmet_dependencies = []
+op33.met_dependencies = [StarDep(name='arg1_1', mode=None), StarDep(name='arg2_1', mode=None)]
+op33.min_input_distance = 0
+op33.max_input_distance = 0
+op33.outputs = [
+    buf33: ExternKernelOut
+    buf33.layout = FixedLayout('cuda:0', torch.bfloat16, size=[2048, 2048], stride=[2048, 1])
+    buf33.users = [NodeUser(node=SchedulerNode(name='op34'), can_inplace=True, is_weak=False)]
+]
+op33.node.kernel = extern_kernels.mm
+
+
+op34: SchedulerNode(ComputedBuffer)
+op34.writes = [MemoryDep('buf34', c0, {c0: 4194304})]
+op34.unmet_dependencies = [MemoryDep('buf32', c0, {c0: 4194304}), MemoryDep('buf33', c0, {c0: 4194304})]
+op34.met_dependencies = []
+op34.min_input_distance = 1
+op34.max_input_distance = 1
+op34.outputs = [
+    buf34: ComputedBuffer
+    buf34.layout = FixedLayout('cuda:0', torch.bfloat16, size=[2048, 2048], stride=[2048, 1])
+    buf34.users = [NodeUser(node=ExternKernelSchedulerNode(name='op35'), can_inplace=False, is_weak=False)]
+]
+op34.group.device = cuda:0
+op34.group.iteration = (4194304, 1)
+op34.sizes = ((4194304,), ())
+buf32_layout = FixedLayout('cuda:0', torch.bfloat16, size=[2048, 2048], stride=[2048, 1])
+buf33_layout = FixedLayout('cuda:0', torch.bfloat16, size=[2048, 2048], stride=[2048, 1])
+buf34_layout = FixedLayout('cuda:0', torch.bfloat16, size=[2048, 2048], stride=[2048, 1])
+class op34_loop_body:
+    var_ranges = {p0: 4194304}
+    index0 = p0
+    def body(self, ops):
+        get_index = self.get_index('index0')
+        load = ops.load('buf32', get_index)
+        to_dtype = ops.to_dtype(load, torch.float32, src_dtype = torch.bfloat16, use_compute_types = True)
+        get_index_1 = self.get_index('index0')
+        load_1 = ops.load('buf32', get_index_1)
+        to_dtype_1 = ops.to_dtype(load_1, torch.float32, src_dtype = torch.bfloat16, use_compute_types = True)
+        neg = ops.neg(to_dtype_1)
+        exp = ops.exp(neg)
+        constant = ops.constant(1.0, torch.float32)
+        add = ops.add(exp, constant)
+        truediv = ops.truediv(to_dtype, add)
+        to_dtype_2 = ops.to_dtype(truediv, torch.bfloat16, src_dtype = torch.float32, use_compute_types = True)
+        get_index_2 = self.get_index('index0')
+        load_2 = ops.load('buf33', get_index_2)
+        mul = ops.mul(to_dtype_2, load_2)
+        get_index_3 = self.get_index('index0')
+        store = ops.store('buf34', get_index_3, mul, None)
+        return store
+
+
+op35: ExternKernelSchedulerNode(ExternKernelOut)
+op35.writes = [StarDep(name='buf35', mode=None)]
+op35.unmet_dependencies = [StarDep(name='buf34', mode=None)]
+op35.met_dependencies = [StarDep(name='arg3_1', mode=None)]
+op35.min_input_distance = 2
+op35.max_input_distance = 2
+op35.outputs = [
+    buf35: ExternKernelOut
+    buf35.layout = FixedLayout('cuda:0', torch.bfloat16, size=[2048, 3584], stride=[3584, 1])
+    buf35.users = [NodeUser(node=SchedulerNode(name='op36'), can_inplace=True, is_weak=False)]
+]
+op35.node.kernel = extern_kernels.mm
+
+
+op37: ExternKernelSchedulerNode(ExternKernelOut)
+op37.writes = [StarDep(name='buf37', mode=None)]
+op37.unmet_dependencies = []
+op37.met_dependencies = [StarDep(name='arg0_1', mode=None), StarDep(name='arg1_1', mode=None)]
+op37.min_input_distance = 0
+op37.max_input_distance = 0
+op37.outputs = [
+    buf37: ExternKernelOut
+    buf37.layout = FixedLayout('cuda:0', torch.bfloat16, size=[2048, 512], stride=[512, 1])
+    buf37.users = [NodeUser(node=SchedulerNode(name='op39'), can_inplace=True, is_weak=False)]
+]
+op37.node.kernel = extern_kernels.mm
+
+
+op38: ExternKernelSchedulerNode(ExternKernelOut)
+op38.writes = [StarDep(name='buf38', mode=None)]
+op38.unmet_dependencies = []
+op38.met_dependencies = [StarDep(name='arg1_1', mode=None), StarDep(name='arg2_1', mode=None)]
+op38.min_input_distance = 0
+op38.max_input_distance = 0
+op38.outputs = [
+    buf38: ExternKernelOut
+    buf38.layout = FixedLayout('cuda:0', torch.bfloat16, size=[2048, 512], stride=[512, 1])
+    buf38.users = [NodeUser(node=SchedulerNode(name='op39'), can_inplace=True, is_weak=False)]
+]
+op38.node.kernel = extern_kernels.mm
+
+
+op39: SchedulerNode(ComputedBuffer)
+op39.writes = [MemoryDep('buf39', c0, {c0: 1048576})]
+op39.unmet_dependencies = [MemoryDep('buf37', c0, {c0: 1048576}), MemoryDep('buf38', c0, {c0: 1048576})]
+op39.met_dependencies = []
+op39.min_input_distance = 1
+op39.max_input_distance = 1
+op39.outputs = [
+    buf39: ComputedBuffer
+    buf39.layout = FixedLayout('cuda:0', torch.bfloat16, size=[2048, 512], stride=[512, 1])
+    buf39.users = [NodeUser(node=ExternKernelSchedulerNode(name='op40'), can_inplace=False, is_weak=False)]
+]
+op39.group.device = cuda:0
+op39.group.iteration = (1048576, 1)
+op39.sizes = ((1048576,), ())
+buf37_layout = FixedLayout('cuda:0', torch.bfloat16, size=[2048, 512], stride=[512, 1])
+buf38_layout = FixedLayout('cuda:0', torch.bfloat16, size=[2048, 512], stride=[512, 1])
+buf39_layout = FixedLayout('cuda:0', torch.bfloat16, size=[2048, 512], stride=[512, 1])
+class op39_loop_body:
+    var_ranges = {p0: 1048576}
+    index0 = p0
+    def body(self, ops):
+        get_index = self.get_index('index0')
+        load = ops.load('buf37', get_index)
+        to_dtype = ops.to_dtype(load, torch.float32, src_dtype = torch.bfloat16, use_compute_types = True)
+        get_index_1 = self.get_index('index0')
+        load_1 = ops.load('buf37', get_index_1)
+        to_dtype_1 = ops.to_dtype(load_1, torch.float32, src_dtype = torch.bfloat16, use_compute_types = True)
+        neg = ops.neg(to_dtype_1)
+        exp = ops.exp(neg)
+        constant = ops.constant(1.0, torch.float32)
+        add = ops.add(exp, constant)
+        truediv = ops.truediv(to_dtype, add)
+        to_dtype_2 = ops.to_dtype(truediv, torch.bfloat16, src_dtype = torch.float32, use_compute_types = True)
+        get_index_2 = self.get_index('index0')
+        load_2 = ops.load('buf38', get_index_2)
+        mul = ops.mul(to_dtype_2, load_2)
+        get_index_3 = self.get_index('index0')
+        store = ops.store('buf39', get_index_3, mul, None)
+        return store
+
+
+op40: ExternKernelSchedulerNode(ExternKernelOut)
+op40.writes = [StarDep(name='buf40', mode=None)]
+op40.unmet_dependencies = [StarDep(name='buf39', mode=None)]
+op40.met_dependencies = [StarDep(name='arg3_1', mode=None)]
+op40.min_input_distance = 2
+op40.max_input_distance = 2
+op40.outputs = [
+    buf40: ExternKernelOut
+    buf40.layout = FixedLayout('cuda:0', torch.bfloat16, size=[2048, 3584], stride=[3584, 1])
+    buf40.users = [NodeUser(node=SchedulerNode(name='op41'), can_inplace=True, is_weak=False)]
+]
+op40.node.kernel = extern_kernels.mm
+
+
+op36_op41: FusedSchedulerNode(SchedulerNode,SchedulerNode)
+op36_op41.writes = 
+    [   MemoryDep('buf36', 3584*d0 + d1, {d0: 2048, d1: 3584}),
+        MemoryDep('buf41', 3584*d0 + d1, {d0: 2048, d1: 3584})]
+op36_op41.unmet_dependencies = 
+    [   MemoryDep('buf11', 3584*d0 + d1, {d0: 2048, d1: 3584}),
+        MemoryDep('buf15', 3584*d0 + d1, {d0: 2048, d1: 3584}),
+        MemoryDep('buf19', 3584*d0 + d1, {d0: 2048, d1: 3584}),
+        MemoryDep('buf23', 3584*d0 + d1, {d0: 2048, d1: 3584}),
+        MemoryDep('buf27', 3584*d0 + d1, {d0: 2048, d1: 3584}),
+        MemoryDep('buf3', 3584*d0 + d1, {d0: 2048, d1: 3584}),
+        MemoryDep('buf31', 3584*d0 + d1, {d0: 2048, d1: 3584}),
+        MemoryDep('buf35', 3584*d0 + d1, {d0: 2048, d1: 3584}),
+        MemoryDep('buf40', 3584*d0 + d1, {d0: 2048, d1: 3584}),
+        MemoryDep('buf7', 3584*d0 + d1, {d0: 2048, d1: 3584})]
+op36_op41.met_dependencies = []
+op36_op41.min_input_distance = 3
+op36_op41.max_input_distance = 4
+op36_op41.outputs = [
+    buf36: ComputedBuffer
+    buf36.layout = FixedLayout('cuda:0', torch.float32, size=[2048, 3584], stride=[3584, 1])
+    buf36.users = [NodeUser(node=SchedulerNode(name='op41'), can_inplace=True, is_weak=False)]
+    buf41: ComputedBuffer
+    buf41.layout = FixedLayout('cuda:0', torch.bfloat16, size=[2048, 3584], stride=[3584, 1])
+    buf41.users = [NodeUser(node=OUTPUT, can_inplace=False, is_weak=False)]
+]
+op36_op41.snodes[0] =
+op36: SchedulerNode(ComputedBuffer)
+op36.writes = [MemoryDep('buf36', c0, {c0: 7340032})]
+op36.unmet_dependencies = 
+    [   MemoryDep('buf11', c0, {c0: 7340032}),
+        MemoryDep('buf15', c0, {c0: 7340032}),
+        MemoryDep('buf19', c0, {c0: 7340032}),
+        MemoryDep('buf23', c0, {c0: 7340032}),
+        MemoryDep('buf27', c0, {c0: 7340032}),
+        MemoryDep('buf3', c0, {c0: 7340032}),
+        MemoryDep('buf31', c0, {c0: 7340032}),
+        MemoryDep('buf35', c0, {c0: 7340032}),
+        MemoryDep('buf7', c0, {c0: 7340032})]
+op36.met_dependencies = []
+op36.min_input_distance = 3
+op36.max_input_distance = 3
+op36.outputs = [
+    buf36: ComputedBuffer
+    buf36.layout = FixedLayout('cuda:0', torch.float32, size=[2048, 3584], stride=[3584, 1])
+    buf36.users = [NodeUser(node=SchedulerNode(name='op41'), can_inplace=True, is_weak=False)]
+]
+op36.group.device = cuda:0
+op36.group.iteration = (7340032, 1)
+op36.sizes = ((7340032,), ())
+buf3_layout = FixedLayout('cuda:0', torch.bfloat16, size=[2048, 3584], stride=[3584, 1])
+buf7_layout = FixedLayout('cuda:0', torch.bfloat16, size=[2048, 3584], stride=[3584, 1])
+buf11_layout = FixedLayout('cuda:0', torch.bfloat16, size=[2048, 3584], stride=[3584, 1])
+buf15_layout = FixedLayout('cuda:0', torch.bfloat16, size=[2048, 3584], stride=[3584, 1])
+buf19_layout = FixedLayout('cuda:0', torch.bfloat16, size=[2048, 3584], stride=[3584, 1])
+buf23_layout = FixedLayout('cuda:0', torch.bfloat16, size=[2048, 3584], stride=[3584, 1])
+buf27_layout = FixedLayout('cuda:0', torch.bfloat16, size=[2048, 3584], stride=[3584, 1])
+buf31_layout = FixedLayout('cuda:0', torch.bfloat16, size=[2048, 3584], stride=[3584, 1])
+buf35_layout = FixedLayout('cuda:0', torch.bfloat16, size=[2048, 3584], stride=[3584, 1])
+buf36_layout = FixedLayout('cuda:0', torch.float32, size=[2048, 3584], stride=[3584, 1])
+class op36_loop_body:
+    var_ranges = {p0: 7340032}
+    index0 = p0
+    def body(self, ops):
+        get_index = self.get_index('index0')
+        load = ops.load('buf3', get_index)
+        to_dtype = ops.to_dtype(load, torch.float32, src_dtype = torch.bfloat16, use_compute_types = True)
+        get_index_1 = self.get_index('index0')
+        load_1 = ops.load('buf7', get_index_1)
+        to_dtype_1 = ops.to_dtype(load_1, torch.float32, src_dtype = torch.bfloat16, use_compute_types = True)
+        add = ops.add(to_dtype, to_dtype_1)
+        get_index_2 = self.get_index('index0')
+        load_2 = ops.load('buf11', get_index_2)
+        to_dtype_2 = ops.to_dtype(load_2, torch.float32, src_dtype = torch.bfloat16, use_compute_types = True)
+        add_1 = ops.add(add, to_dtype_2)
+        get_index_3 = self.get_index('index0')
+        load_3 = ops.load('buf15', get_index_3)
+        to_dtype_3 = ops.to_dtype(load_3, torch.float32, src_dtype = torch.bfloat16, use_compute_types = True)
+        add_2 = ops.add(add_1, to_dtype_3)
+        get_index_4 = self.get_index('index0')
+        load_4 = ops.load('buf19', get_index_4)
+        to_dtype_4 = ops.to_dtype(load_4, torch.float32, src_dtype = torch.bfloat16, use_compute_types = True)
+        add_3 = ops.add(add_2, to_dtype_4)
+        get_index_5 = self.get_index('index0')
+        load_5 = ops.load('buf23', get_index_5)
+        to_dtype_5 = ops.to_dtype(load_5, torch.float32, src_dtype = torch.bfloat16, use_compute_types = True)
+        add_4 = ops.add(add_3, to_dtype_5)
+        get_index_6 = self.get_index('index0')
+        load_6 = ops.load('buf27', get_index_6)
+        to_dtype_6 = ops.to_dtype(load_6, torch.float32, src_dtype = torch.bfloat16, use_compute_types = True)
+        add_5 = ops.add(add_4, to_dtype_6)
+        get_index_7 = self.get_index('index0')
+        load_7 = ops.load('buf31', get_index_7)
+        to_dtype_7 = ops.to_dtype(load_7, torch.float32, src_dtype = torch.bfloat16, use_compute_types = True)
+        add_6 = ops.add(add_5, to_dtype_7)
+        get_index_8 = self.get_index('index0')
+        load_8 = ops.load('buf35', get_index_8)
+        to_dtype_8 = ops.to_dtype(load_8, torch.float32, src_dtype = torch.bfloat16, use_compute_types = True)
+        add_7 = ops.add(add_6, to_dtype_8)
+        get_index_9 = self.get_index('index0')
+        store = ops.store('buf36', get_index_9, add_7, None)
+        return store
+op36_op41.snodes[1] =
+op41: SchedulerNode(ComputedBuffer)
+op41.writes = [MemoryDep('buf41', c0, {c0: 7340032})]
+op41.unmet_dependencies = [MemoryDep('buf36', c0, {c0: 7340032}), MemoryDep('buf40', c0, {c0: 7340032})]
+op41.met_dependencies = []
+op41.min_input_distance = 3
+op41.max_input_distance = 4
+op41.outputs = [
+    buf41: ComputedBuffer
+    buf41.layout = FixedLayout('cuda:0', torch.bfloat16, size=[2048, 3584], stride=[3584, 1])
+    buf41.users = [NodeUser(node=OUTPUT, can_inplace=False, is_weak=False)]
+]
+op41.group.device = cuda:0
+op41.group.iteration = (7340032, 1)
+op41.sizes = ((7340032,), ())
+buf36_layout = FixedLayout('cuda:0', torch.float32, size=[2048, 3584], stride=[3584, 1])
+buf40_layout = FixedLayout('cuda:0', torch.bfloat16, size=[2048, 3584], stride=[3584, 1])
+buf41_layout = FixedLayout('cuda:0', torch.bfloat16, size=[2048, 3584], stride=[3584, 1])
+class op41_loop_body:
+    var_ranges = {p0: 7340032}
+    index0 = p0
+    def body(self, ops):
+        get_index = self.get_index('index0')
+        load = ops.load('buf36', get_index)
+        get_index_1 = self.get_index('index0')
+        load_1 = ops.load('buf40', get_index_1)
+        to_dtype = ops.to_dtype(load_1, torch.float32, src_dtype = torch.bfloat16, use_compute_types = True)
+        add = ops.add(load, to_dtype)
+        to_dtype_1 = ops.to_dtype(add, torch.bfloat16, src_dtype = torch.float32, use_compute_types = True)
+        get_index_2 = self.get_index('index0')
+        store = ops.store('buf41', get_index_2, to_dtype_1, None)
+        return store
+
+
