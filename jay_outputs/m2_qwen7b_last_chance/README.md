@@ -104,3 +104,41 @@ occupancy or spills) before Gate 3. A service gain must exceed paired-run
 noise and a predeclared practical threshold. A negative result here does not
 prove that every Inductor workload lacks a gap; it ends this bounded thesis
 search and frees effort for the next ranked hypothesis.
+
+## Final Q/K RoPE oracle (prepared, not run)
+
+This last test uses the current checked-out vLLM/PyTorch commit. First submit
+the existing [full-model compile dump](../../jay_scripts/m2_qwen7b_compile_dump.sbatch)
+to confirm that deployed Qwen2.5-7B still emits separate Q and K RoPE
+launches. Then submit the [isolated oracle array](../../jay_scripts/m2_qwen7b_qk_rope_oracle.sbatch):
+
+```bash
+cd /u/jsaravananindira/vllm
+git status --short
+git rev-parse HEAD
+sbatch jay_scripts/m2_qwen7b_compile_dump.sbatch
+sbatch jay_scripts/m2_qwen7b_qk_rope_oracle.sbatch
+```
+
+The array runs decode shapes 1 and 4 in task 0 and prefill shapes 512 and
+2048 in task 1. Each task requests one A100 for 4 minutes 30 seconds. The
+expected runtime is about 3 minutes per task including isolated compilation;
+the full-model dump has its own 3-minute allocation. The array runs no model
+weights: it compiles the actual `RotaryEmbedding.forward_static` Q/K region
+with Qwen2.5-7B dimensions, then compares one Triton Q/K kernel. Inputs,
+positions, BF16 cache, QKV and V view are shared between arms. Correctness is
+checked against eager vLLM and the current Inductor result before timing.
+
+Each `qk_rope_*_<job-id>/` result directory contains `environment.txt`,
+`run.log`, `result.json`, Inductor's generated `output_code.py` under
+`torch_compile_debug/`, and the combined kernel's PTX and Triton IR. Times
+are CUDA graph replay microseconds per region call, with alternating arm
+order. This isolates GPU region cost; it does not establish serving benefit.
+
+Inspect `generated_baseline_wrappers[].launches` in `result.json` and the
+full-model dump. If current Inductor already emits one launch, there is no
+missing Q/K fusion to claim. If it emits two, require a correct combined
+kernel to win by at least 5% repeatedly on two shapes, including a held-out
+shape, before considering a serving replay. Otherwise close this bounded M2
+prospect. The old-cache analysis is in
+[`inventory/PHYSICAL_REGION_REVIEW.md`](inventory/PHYSICAL_REGION_REVIEW.md).
