@@ -171,7 +171,11 @@ def run_shape(tokens, cache, output, repeats):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--shapes", choices=("decode", "prefill"), required=True)
+    parser.add_argument(
+        "--shapes",
+        choices=("decode", "mid_low", "mid_high", "prefill"),
+        required=True,
+    )
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--bench-rep-ms", type=int, default=40)
     args = parser.parse_args()
@@ -179,7 +183,12 @@ def main():
     args.output.mkdir(parents=True, exist_ok=True)
     debug_dir = args.output / "torch_compile_debug"
     assert debug_dir.exists(), "Set TORCH_COMPILE_DEBUG_DIR before Python starts"
-    shapes = (1, 4) if args.shapes == "decode" else (512, 2048)
+    shapes = {
+        "decode": (1, 4),
+        "mid_low": (8, 16, 32),
+        "mid_high": (64, 128, 256),
+        "prefill": (512, 2048),
+    }[args.shapes]
     cache = make_cache()
     result = {
         "git_head": subprocess.check_output(
@@ -195,6 +204,8 @@ def main():
     for tokens in shapes:
         case = run_shape(tokens, cache, args.output, args.bench_rep_ms)
         result["cases"].append(case)
+        result["generated_baseline_wrappers"] = inspect_baseline(debug_dir)
+        (args.output / "result.json").write_text(json.dumps(result, indent=2) + "\n")
         print(json.dumps(case), flush=True)
     result["generated_baseline_wrappers"] = inspect_baseline(debug_dir)
     assert result["generated_baseline_wrappers"], "No Inductor code dump was found"
