@@ -1,7 +1,9 @@
 # M4 streamed reduction follow-up
 
-This is the next rejection experiment after [array 23969387](../m4_peak_screen/RESULT_CARD_23969387.md).
-No result is recorded here yet. The prior whole-graph tiled arm retained ten
+**Initial result:** [Job 23999692](RESULT_CARD_23999692.md) shows that explicit
+streaming lowers incremental allocated peak by 78 MiB at 2048 tokens, but
+raises median GPU latency by 77.7%. It passes the memory and accuracy gates
+and fails the provisional latency gate. The prior whole-graph tiled arm retained ten
 partial down-projection outputs, leaving allocated peak almost unchanged.
 
 This job compares compiled stock with an explicitly streamed arm at 2048
