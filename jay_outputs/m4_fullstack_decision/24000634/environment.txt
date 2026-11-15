@@ -1,0 +1,7 @@
+Sun Nov 15 06:35:14 UTC 2026
+59462ee3f2e3042572de6cd6625658d369d51d30
+?? jay_outputs/m4_fullstack_decision/24000634/
+?? jay_outputs/m4_fullstack_decision/slurm-24000634.out
+name, memory.total [MiB], driver_version
+NVIDIA A100-SXM4-40GB, 40960 MiB, 595.71.05
+2.14.0+cu132 3.8.0 13.2 0.1.dev24300+g8530a778f /u/jsaravananindira/vllm-m4/vllm/__init__.py

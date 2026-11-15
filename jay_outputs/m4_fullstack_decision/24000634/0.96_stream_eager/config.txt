@@ -1,0 +1,1 @@
+arm=stream_eager utilization=0.96 stream=1

@@ -1,0 +1,1 @@
+arm=stock_default utilization=0.96 stream=0

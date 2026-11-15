@@ -1,0 +1,98 @@
+{
+  "0.96_stock_default_long_prefill": {
+    "status": "server_failed",
+    "result": null,
+    "kv_cache_tokens": null,
+    "device_peak_mib": null,
+    "device_sample_count": 0,
+    "stream_active_count": 0
+  },
+  "0.96_stock_eager_long_prefill": {
+    "status": "server_failed",
+    "result": null,
+    "kv_cache_tokens": null,
+    "device_peak_mib": null,
+    "device_sample_count": 0,
+    "stream_active_count": 0
+  },
+  "0.96_stream_eager_long_prefill": {
+    "status": "server_failed",
+    "result": null,
+    "kv_cache_tokens": null,
+    "device_peak_mib": null,
+    "device_sample_count": 0,
+    "stream_active_count": 0
+  },
+  "0.96_stock_default_mixed": {
+    "status": "server_failed",
+    "result": null,
+    "kv_cache_tokens": null,
+    "device_peak_mib": null,
+    "device_sample_count": 0,
+    "stream_active_count": 0
+  },
+  "0.96_stock_eager_mixed": {
+    "status": "server_failed",
+    "result": null,
+    "kv_cache_tokens": null,
+    "device_peak_mib": null,
+    "device_sample_count": 0,
+    "stream_active_count": 0
+  },
+  "0.96_stream_eager_mixed": {
+    "status": "server_failed",
+    "result": null,
+    "kv_cache_tokens": null,
+    "device_peak_mib": null,
+    "device_sample_count": 0,
+    "stream_active_count": 0
+  },
+  "0.99_stock_default_long_prefill": {
+    "status": "server_failed",
+    "result": null,
+    "kv_cache_tokens": null,
+    "device_peak_mib": null,
+    "device_sample_count": 0,
+    "stream_active_count": 0
+  },
+  "0.99_stock_eager_long_prefill": {
+    "status": "server_failed",
+    "result": null,
+    "kv_cache_tokens": null,
+    "device_peak_mib": null,
+    "device_sample_count": 0,
+    "stream_active_count": 0
+  },
+  "0.99_stream_eager_long_prefill": {
+    "status": "server_failed",
+    "result": null,
+    "kv_cache_tokens": null,
+    "device_peak_mib": null,
+    "device_sample_count": 0,
+    "stream_active_count": 0
+  },
+  "0.99_stock_default_mixed": {
+    "status": "server_failed",
+    "result": null,
+    "kv_cache_tokens": null,
+    "device_peak_mib": null,
+    "device_sample_count": 0,
+    "stream_active_count": 0
+  },
+  "0.99_stock_eager_mixed": {
+    "status": "server_failed",
+    "result": null,
+    "kv_cache_tokens": null,
+    "device_peak_mib": null,
+    "device_sample_count": 0,
+    "stream_active_count": 0
+  },
+  "0.99_stream_eager_mixed": {
+    "status": "server_failed",
+    "result": null,
+    "kv_cache_tokens": null,
+    "device_peak_mib": null,
+    "device_sample_count": 0,
+    "stream_active_count": 0
+  }
+}
