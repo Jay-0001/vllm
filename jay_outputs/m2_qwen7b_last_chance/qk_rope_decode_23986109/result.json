@@ -1,0 +1,76 @@
+{
+  "git_head": "9f572081fbd7d4ebe403c7caeb13697dfedf922d",
+  "torch": "2.14.0+cu132",
+  "triton": "3.8.0",
+  "gpu": "NVIDIA A100-SXM4-40GB",
+  "shapes": "decode",
+  "timing": "Triton CUDA graph replay; microseconds per region call",
+  "cases": [
+    {
+      "tokens": 1,
+      "errors": {
+        "inductor_vs_eager": {
+          "q": 0.015625,
+          "k": 0.015625,
+          "v": 0.0
+        },
+        "oracle_vs_inductor": {
+          "q": 0.0,
+          "k": 0.0,
+          "v": 0.0
+        }
+      },
+      "samples": {
+        "inductor_us": [
+          3.219490112056138,
+          3.2119974820965136
+        ],
+        "combined_us": [
+          1.5733433534655026,
+          1.568400985928839
+        ]
+      }
+    },
+    {
+      "tokens": 4,
+      "errors": {
+        "inductor_vs_eager": {
+          "q": 0.015625,
+          "k": 0.015625,
+          "v": 0.0
+        },
+        "oracle_vs_inductor": {
+          "q": 0.0,
+          "k": 0.0,
+          "v": 0.0
+        }
+      },
+      "samples": {
+        "inductor_us": [
+          3.6071627639060795,
+          3.5987127603957743
+        ],
+        "combined_us": [
+          1.6412775029815752,
+          1.6381311357708699
+        ]
+      }
+    }
+  ],
+  "generated_baseline_wrappers": [
+    {
+      "path": "/u/jsaravananindira/vllm/jay_outputs/m2_qwen7b_last_chance/qk_rope_decode_23986109/torch_compile_debug/torch_compile_debug/run_2026_11_14_18_10_16_319084-pid_991362/torchinductor/model__0_inference_0.0/output_code.py",
+      "launches": [
+        "triton_poi_fused_add_cat_index_select_mul_split_split_with_sizes_sub_unsqueeze_view_0",
+        "triton_poi_fused_add_cat_index_select_mul_split_split_with_sizes_sub_unsqueeze_view_1"
+      ]
+    },
+    {
+      "path": "/u/jsaravananindira/vllm/jay_outputs/m2_qwen7b_last_chance/qk_rope_decode_23986109/torch_compile_debug/torch_compile_debug/run_2026_11_14_18_10_16_319084-pid_991362/torchinductor/model__1_inference_1.1/output_code.py",
+      "launches": [
+        "triton_poi_fused_add_cat_index_select_mul_split_split_with_sizes_sub_unsqueeze_view_0",
+        "triton_poi_fused_add_cat_index_select_mul_split_split_with_sizes_sub_unsqueeze_view_1"
+      ]
+    }
+  ]
+}
