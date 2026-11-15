@@ -1,0 +1,7 @@
+Sun Nov 15 06:07:56 UTC 2026
+df7b7973790743669c8a60e1d5b7a92ca7136cae
+thesis/m4-physical-peak
+python_bin=/u/jsaravananindira/vllm/.venv/bin/python
+name, memory.total [MiB], driver_version
+NVIDIA A100-SXM4-40GB, 40960 MiB, 595.71.05
+2.14.0+cu132 3.8.0 13.2 0.1.dev24300+g8530a778f
