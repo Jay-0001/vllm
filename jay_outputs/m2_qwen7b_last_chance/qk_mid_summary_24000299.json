@@ -1,0 +1,59 @@
+{
+  "array_job_id": "24000299",
+  "cases": [
+    {
+      "tokens": 8,
+      "inductor_median_us": 4.7893217446856955,
+      "combined_median_us": 2.245966201398592,
+      "paired_improvement_pct": [
+        53.110351497179266,
+        53.09907173292251
+      ]
+    },
+    {
+      "tokens": 16,
+      "inductor_median_us": 5.0889053590980495,
+      "combined_median_us": 2.357433245287857,
+      "paired_improvement_pct": [
+        53.72973349479594,
+        53.62024531833917
+      ]
+    },
+    {
+      "tokens": 32,
+      "inductor_median_us": 5.504545269342453,
+      "combined_median_us": 2.7183980689807883,
+      "paired_improvement_pct": [
+        51.43677367928214,
+        49.7654430678353
+      ]
+    },
+    {
+      "tokens": 64,
+      "inductor_median_us": 4.385879452762708,
+      "combined_median_us": 2.734773071362988,
+      "paired_improvement_pct": [
+        37.741201819670245,
+        37.55037919634064
+      ]
+    },
+    {
+      "tokens": 128,
+      "inductor_median_us": 4.959697830103398,
+      "combined_median_us": 3.7444145927386483,
+      "paired_improvement_pct": [
+        24.571638714900757,
+        24.434545355017384
+      ]
+    },
+    {
+      "tokens": 256,
+      "inductor_median_us": 5.935009520637165,
+      "combined_median_us": 6.019666185006541,
+      "paired_improvement_pct": [
+        -1.3292090625933861,
+        -1.5238022969265068
+      ]
+    }
+  ]
+}

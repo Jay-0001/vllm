@@ -1,0 +1,9 @@
+W1115 00:25:41.060000 715893 torch/_opaque_base.py:6] torch._opaque_base is deprecated, use torch._custom_class_base instead
+W1115 00:25:41.061000 715893 torch/_library/opaque_object.py:288] register_opaque_type is deprecated, use register_custom_class instead
+W1115 00:25:41.061000 715893 torch/_library/opaque_object.py:211] typ='value' is deprecated, use typ='constant' instead
+W1115 00:26:25.246000 715893 torch/_inductor/debug.py:587] [0/0] model__0_inference_0 debug trace: /u/jsaravananindira/vllm/jay_outputs/m2_qwen7b_last_chance/qk_rope_mid_high_24000299_1/torch_compile_debug/torch_compile_debug/run_2026_11_15_00_26_14_850313-pid_715893/torchinductor/model__0_inference_0.0
+{"tokens": 64, "errors": {"inductor_vs_eager": {"q": 0.03125, "k": 0.015625, "v": 0.0}, "oracle_vs_inductor": {"q": 0.0, "k": 0.0, "v": 0.0}}, "samples": {"inductor_us": [4.3936255772908535, 4.378133328234563], "combined_us": [2.7354184809648605, 2.7341276617611157]}}
+W1115 00:26:27.762000 715893 torch/_inductor/debug.py:587] [0/1] model__1_inference_1 debug trace: /u/jsaravananindira/vllm/jay_outputs/m2_qwen7b_last_chance/qk_rope_mid_high_24000299_1/torch_compile_debug/torch_compile_debug/run_2026_11_15_00_26_14_850313-pid_715893/torchinductor/model__1_inference_1.1
+{"tokens": 128, "errors": {"inductor_vs_eager": {"q": 0.03125, "k": 0.015625, "v": 0.0}, "oracle_vs_inductor": {"q": 0.0, "k": 0.0, "v": 0.0}}, "samples": {"inductor_us": [4.9654069303096025, 4.953988729897192], "combined_us": [3.745325078669283, 3.7435041068080133]}}
+{"tokens": 256, "errors": {"inductor_vs_eager": {"q": 0.03125, "k": 0.015625, "v": 0.0}, "oracle_vs_inductor": {"q": 0.0, "k": 0.0, "v": 0.0}}, "samples": {"inductor_us": [5.9417759807661055, 5.928243060508225], "combined_us": [6.020754605581446, 6.018577764431636]}}
+Results: /u/jsaravananindira/vllm/jay_outputs/m2_qwen7b_last_chance/qk_rope_mid_high_24000299_1

@@ -1,0 +1,10 @@
+{
+  "iterations": 570,
+  "phase_counts": {
+    "prefill": 1,
+    "decode": 463,
+    "mixed": 106
+  },
+  "decode_le_4": 50,
+  "decode_8_to_256": 392
+}

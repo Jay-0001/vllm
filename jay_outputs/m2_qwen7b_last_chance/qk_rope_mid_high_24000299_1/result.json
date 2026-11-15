@@ -1,0 +1,101 @@
+{
+  "git_head": "3b09e1f41695107f1df2efbde50e399bc0841684",
+  "torch": "2.14.0+cu132",
+  "triton": "3.8.0",
+  "gpu": "NVIDIA A100-SXM4-40GB",
+  "shapes": "mid_high",
+  "timing": "Triton CUDA graph replay; microseconds per region call",
+  "cases": [
+    {
+      "tokens": 64,
+      "errors": {
+        "inductor_vs_eager": {
+          "q": 0.03125,
+          "k": 0.015625,
+          "v": 0.0
+        },
+        "oracle_vs_inductor": {
+          "q": 0.0,
+          "k": 0.0,
+          "v": 0.0
+        }
+      },
+      "samples": {
+        "inductor_us": [
+          4.3936255772908535,
+          4.378133328234563
+        ],
+        "combined_us": [
+          2.7354184809648605,
+          2.7341276617611157
+        ]
+      }
+    },
+    {
+      "tokens": 128,
+      "errors": {
+        "inductor_vs_eager": {
+          "q": 0.03125,
+          "k": 0.015625,
+          "v": 0.0
+        },
+        "oracle_vs_inductor": {
+          "q": 0.0,
+          "k": 0.0,
+          "v": 0.0
+        }
+      },
+      "samples": {
+        "inductor_us": [
+          4.9654069303096025,
+          4.953988729897192
+        ],
+        "combined_us": [
+          3.745325078669283,
+          3.7435041068080133
+        ]
+      }
+    },
+    {
+      "tokens": 256,
+      "errors": {
+        "inductor_vs_eager": {
+          "q": 0.03125,
+          "k": 0.015625,
+          "v": 0.0
+        },
+        "oracle_vs_inductor": {
+          "q": 0.0,
+          "k": 0.0,
+          "v": 0.0
+        }
+      },
+      "samples": {
+        "inductor_us": [
+          5.9417759807661055,
+          5.928243060508225
+        ],
+        "combined_us": [
+          6.020754605581446,
+          6.018577764431636
+        ]
+      }
+    }
+  ],
+  "generated_baseline_wrappers": [
+    {
+      "path": "/u/jsaravananindira/vllm/jay_outputs/m2_qwen7b_last_chance/qk_rope_mid_high_24000299_1/torch_compile_debug/torch_compile_debug/run_2026_11_15_00_26_14_850313-pid_715893/torchinductor/model__0_inference_0.0/output_code.py",
+      "launches": [
+        "triton_poi_fused_add_cat_index_select_mul_split_split_with_sizes_sub_unsqueeze_view_0",
+        "triton_poi_fused_add_cat_index_select_mul_split_split_with_sizes_sub_unsqueeze_view_1"
+      ]
+    },
+    {
+      "path": "/u/jsaravananindira/vllm/jay_outputs/m2_qwen7b_last_chance/qk_rope_mid_high_24000299_1/torch_compile_debug/torch_compile_debug/run_2026_11_15_00_26_14_850313-pid_715893/torchinductor/model__1_inference_1.1/output_code.py",
+      "launches": [
+        "triton_poi_fused_add_cat_index_select_mul_split_split_with_sizes_sub_unsqueeze_view_0",
+        "triton_poi_fused_add_cat_index_select_mul_split_split_with_sizes_sub_unsqueeze_view_1"
+      ]
+    }
+  ]
+}

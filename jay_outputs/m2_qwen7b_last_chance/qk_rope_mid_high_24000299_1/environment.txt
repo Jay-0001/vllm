@@ -1,0 +1,5 @@
+2026-11-15T06:25:24Z
+3b09e1f41695107f1df2efbde50e399bc0841684
+2.14.0+cu132 3.8.0
+name, uuid, memory.total [MiB], driver_version
+NVIDIA A100-SXM4-40GB, GPU-a3e621b8-71f7-b9bc-d18a-3ab4cb677611, 40960 MiB, 595.71.05
