@@ -35,30 +35,44 @@ def native_region(qkv, positions, cache):
 
 @triton.jit
 def combined_qk_kernel(
-    qkv, positions, cache, q_out, k_out, tokens: tl.constexpr, block: tl.constexpr
+    qkv,
+    positions,
+    cache,
+    q_out,
+    k_out,
+    tokens: tl.constexpr,
+    q_width: tl.constexpr,
+    k_width: tl.constexpr,
+    qkv_width: tl.constexpr,
+    head_dim: tl.constexpr,
+    block: tl.constexpr,
 ):
+    qk_width = q_width + k_width
+    half_dim = head_dim // 2
     index = tl.program_id(0) * block + tl.arange(0, block)
-    mask = index < tokens * QK_WIDTH
-    token = index // QK_WIDTH
-    column = index % QK_WIDTH
-    rotary_column = column % HEAD_DIM
-    paired = tl.where(rotary_column < 64, column + 64, column - 64)
+    mask = index < tokens * qk_width
+    token = index // qk_width
+    column = index % qk_width
+    rotary_column = column % head_dim
+    paired = tl.where(
+        rotary_column < half_dim, column + half_dim, column - half_dim
+    )
     position = tl.load(positions + token, mask, other=0)
-    x = tl.load(qkv + token * QKV_WIDTH + column, mask, other=0).to(tl.float32)
-    xp = tl.load(qkv + token * QKV_WIDTH + paired, mask, other=0).to(
+    x = tl.load(qkv + token * qkv_width + column, mask, other=0).to(tl.float32)
+    xp = tl.load(qkv + token * qkv_width + paired, mask, other=0).to(
         tl.float32
     )
-    frequency = position * HEAD_DIM + rotary_column % 64
+    frequency = position * head_dim + rotary_column % half_dim
     cosine = tl.load(cache + frequency, mask, other=0).to(tl.float32)
-    sine = tl.load(cache + frequency + 64, mask, other=0).to(tl.float32)
+    sine = tl.load(cache + frequency + half_dim, mask, other=0).to(tl.float32)
     rotated = tl.where(
-        rotary_column < 64, x * cosine - xp * sine, x * cosine + xp * sine
+        rotary_column < half_dim, x * cosine - xp * sine, x * cosine + xp * sine
     )
-    tl.store(q_out + token * Q_WIDTH + column, rotated, mask & (column < Q_WIDTH))
+    tl.store(q_out + token * q_width + column, rotated, mask & (column < q_width))
     tl.store(
-        k_out + token * K_WIDTH + column - Q_WIDTH,
+        k_out + token * k_width + column - q_width,
         rotated,
-        mask & (column >= Q_WIDTH),
+        mask & (column >= q_width),
     )
 
 
@@ -108,7 +122,17 @@ def run_shape(tokens, cache, output, repeats):
 
     def oracle():
         kernel = combined_qk_kernel[(triton.cdiv(tokens * QK_WIDTH, BLOCK),)](
-            qkv, positions, cache, q_out, k_out, tokens, BLOCK
+            qkv,
+            positions,
+            cache,
+            q_out,
+            k_out,
+            tokens,
+            Q_WIDTH,
+            K_WIDTH,
+            QKV_WIDTH,
+            HEAD_DIM,
+            BLOCK,
         )
         return (q_out, k_out, qkv[:, QK_WIDTH:]), kernel
 

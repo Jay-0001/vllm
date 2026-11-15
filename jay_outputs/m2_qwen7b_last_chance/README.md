@@ -105,7 +105,14 @@ noise and a predeclared practical threshold. A negative result here does not
 prove that every Inductor workload lacks a gap; it ends this bounded thesis
 search and frees effort for the next ranked hypothesis.
 
-## Final Q/K RoPE oracle (prepared, not run)
+## Final Q/K RoPE oracle
+
+The first attempt is documented in
+[`RESULT_CARD_23985448_23985476.md`](RESULT_CARD_23985448_23985476.md).
+The full-model dump confirmed two RoPE launches, but a Triton constant error
+stopped both oracle tasks before correctness or timing. The script has been
+corrected; rerun the oracle array from the updated checkout. The procedure
+below describes the complete screen.
 
 This last test uses the current checked-out vLLM/PyTorch commit. First submit
 the existing [full-model compile dump](../../jay_scripts/m2_qwen7b_compile_dump.sbatch)
