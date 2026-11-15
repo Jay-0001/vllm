@@ -25,12 +25,14 @@
 # limitations under the License.
 """Inference-only Qwen2 model compatible with HuggingFace weights."""
 
+import os
 from collections.abc import Iterable
 from itertools import islice
 from typing import Any
 
 import torch
 from torch import nn
+from torch.nn import functional as F
 from transformers import Qwen2Config
 
 from vllm.compilation.decorators import support_torch_compile
@@ -107,8 +109,35 @@ class Qwen2MLP(nn.Module):
                 f"Unsupported activation: {hidden_act}. Only silu is supported for now."
             )
         self.act_fn = SiluAndMul()
+        self._m4_stream = os.getenv("M4_STREAM_QWEN_MLP", "0") == "1"
+        self._m4_stream_reported = False
+        if self._m4_stream:
+            if quant_config is not None or get_tensor_model_parallel_world_size() != 1:
+                raise ValueError("M4 stream requires unquantized, single-GPU Qwen2")
+
+    def _m4_stream_forward(self, x):
+        if not self._m4_stream_reported:
+            print(f"M4_STREAM_ACTIVE shape={tuple(x.shape)}", flush=True)
+            self._m4_stream_reported = True
+        gate_weight, up_weight = self.gate_up_proj.weight.chunk(2, dim=0)
+        down_weight = self.down_proj.weight
+        intermediate = gate_weight.shape[0]
+        accumulator = torch.zeros(
+            (*x.shape[:-1], down_weight.shape[0]),
+            device=x.device,
+            dtype=torch.float32,
+        )
+        for start in range(0, intermediate, 2048):
+            end = min(start + 2048, intermediate)
+            gate = F.linear(x, gate_weight[start:end])
+            up = F.linear(x, up_weight[start:end])
+            partial = F.linear(F.silu(gate) * up, down_weight[:, start:end])
+            accumulator.add_(partial.float())
+        return accumulator.to(x.dtype)
 
     def forward(self, x):
+        if self._m4_stream and x.shape[-2] >= 512:
+            return self._m4_stream_forward(x)
         gate_up, _ = self.gate_up_proj(x)
         x = self.act_fn(gate_up)
         x, _ = self.down_proj(x)
